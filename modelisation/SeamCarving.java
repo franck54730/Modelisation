@@ -78,7 +78,7 @@ public class SeamCarving {
 	
 	public static void writepgm(int[][] image, String filename){
 		   try {
-			   FileWriter fw = new FileWriter(filename+".pgm", true);
+			   FileWriter fw = new FileWriter("src/"+filename+".pgm", true);
 			   BufferedWriter output = new BufferedWriter(fw);
 			   output.write("P2\n");
 			   output.write(image.length+" ");
@@ -92,7 +92,7 @@ public class SeamCarving {
 			   }
 			   output.flush();
 			   output.close();
-			   System.out.println("fichier créé");
+			   System.out.println("fichier pgm cree");
 		   }
 		   catch(IOException ioe){
 				System.out.print(System.err);
@@ -113,15 +113,14 @@ public class SeamCarving {
 	//TODO a degager pour le rendu sert juste a faire des tests
 	public static void main(String[] args) {
 		
-		/*try {
+		try {
    		Affichage("ex1.pgm");
    	} catch (IOException e) {
    		// TODO Auto-generated catch block
    		e.printStackTrace();
-   	 	}*/
+   	 	}
    	
-   	
-		int tab[][] = { {0,2,4,6,8},{1,3,5,7,9} };
+		int tab[][] = { {0,2,4,6,8},{1,3,5,7,9},{0,2,4,6,8} };
 		writepgm(tab, "test");
 		new SeamCarving();
 	}
