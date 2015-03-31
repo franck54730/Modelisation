@@ -1,6 +1,9 @@
 package modelisation;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Scanner;
@@ -72,9 +75,56 @@ public class SeamCarving {
 		}
 		return rep;
 	}
+	
+	public static void writepgm(int[][] image, String filename){
+		   try {
+			   FileWriter fw = new FileWriter(filename+".pgm", true);
+			   BufferedWriter output = new BufferedWriter(fw);
+			   output.write("P2\n");
+			   output.write(image.length+" ");
+			   output.write(image[0].length+"\n");
+			   output.write("255\n");
+			   for(int i=0; i<image.length; i++){
+				   for(int j=0; j<image[i].length; j++){
+					    output.write(image[i][j]+" ");
+				   }
+				   output.write("\n");
+			   }
+			   output.flush();
+			   output.close();
+			   System.out.println("fichier créé");
+		   }
+		   catch(IOException ioe){
+				System.out.print(System.err);
+				ioe.printStackTrace();
+				}
+	}
+
+	public static void Affichage(String fn) throws IOException{
+		   
+		   InputStream f = ClassLoader.getSystemClassLoader().getResourceAsStream(fn);
+	    BufferedReader d = new BufferedReader(new InputStreamReader(f));
+	    String line = "";
+	    while ((line = d.readLine()) != null) {
+	 	   System.out.println(line);
+	    }
+	}
 
 	//TODO a degager pour le rendu sert juste a faire des tests
 	public static void main(String[] args) {
+		
+		/*try {
+   		Affichage("ex1.pgm");
+   	} catch (IOException e) {
+   		// TODO Auto-generated catch block
+   		e.printStackTrace();
+   	 	}*/
+   	
+   	
+		int tab[][] = { {0,2,4,6,8},{1,3,5,7,9} };
+		writepgm(tab, "test");
 		new SeamCarving();
 	}
+
 }
+
