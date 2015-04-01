@@ -109,20 +109,68 @@ public class SeamCarving {
 	 	   System.out.println(line);
 	    }
 	}
+	
+	public static Graph toGraph(int[][]tab){
+		
+		int N = tab.length * tab[0].length+2;
+		Graph rep = new Graph(tab.length * (tab[0].length+2));
+		
+		for(int i=1; i <= tab.length;i++){
+			rep.addEdge(new Edge(0,i,Integer.MAX_VALUE,0));
+		}
+		
+		for(int i = 1; i < N-1; i++){
+			
+			boolean gauche = 1 <= i && i <= tab.length;
+			boolean droite = (N-2-tab.length) < i && i < N-2;
+			boolean haut = (i-1)%tab.length == 0;
+			boolean bas = i%tab.length == 0;
+			
+			if(!gauche){
+				rep.addEdge(new Edge(i, i-tab.length, Integer.MAX_VALUE, 0));
+			}
+			if(!gauche && !haut){
+				rep.addEdge(new Edge(i, i-tab.length-1, Integer.MAX_VALUE, 0));
+			}
+			if(!gauche && !bas){
+				rep.addEdge(new Edge(i, i-tab.length+1, Integer.MAX_VALUE, 0));
+			}
+			if(!droite){
+				int aux[][] = interest(tab);
+				rep.addEdge(new Edge(i, i+tab.length, capacity(aux,N), 0));
+			}
+		}
+		return rep;
+	}
+	
+	public static int capacity(int [][]tab, int N){
+		N=N-1;
+		/*System.out.println("tab.length = "+tab[0].length);
+		System.out.println("N = "+N);
+		System.out.println("(N / tab.length) - 1 = "+N/tab[0].length);
+		System.out.println("N % tab.length = "+N%tab[0].length);
+		System.out.println(tab[N/tab[0].length][N%tab[0].length]);*/
+		
+		return tab[N/tab[0].length][N%tab[0].length];
+	}
 
 	//TODO a degager pour le rendu sert juste a faire des tests
 	public static void main(String[] args) {
 		
-		try {
-   		Affichage("ex1.pgm");
-   	} catch (IOException e) {
-   		// TODO Auto-generated catch block
-   		e.printStackTrace();
-   	 	}
+		/*try {
+			Affichage("ex1.pgm");
+   		} catch (IOException e) {
+   			// TODO Auto-generated catch block
+   			e.printStackTrace();
+   	 	}*/
+		
+		//new SeamCarving();
    	
-		int tab[][] = { {0,2,4,6,8},{1,3,5,7,9},{0,2,4,6,8} };
-		writepgm(tab, "test");
-		new SeamCarving();
+		int tab[][] = { {8,1,5}, {3,2,9}, {4,6,7} };
+		//writepgm(tab, "test");
+		
+		
+		capacity(tab,1);
 	}
 
 }
