@@ -172,6 +172,18 @@ public class SeamCarving {
 		
 		capacity(tab,1);
 	}
+	
+	public static int[] minFlowMaxByRow(int[][] interest){
+		int[] rep = new int[interest.length];
+		for(int i = 0; i < interest.length; i++){
+			int min = Integer.MAX_VALUE;
+			for(int j = 0; j < interest[0].length; j++){
+				min = interest[i][j]<min? interest[i][j]:min;
+			}
+			rep[i] = min;
+		}
+		return rep;
+	}
 
 }
 
