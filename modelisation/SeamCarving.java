@@ -17,7 +17,10 @@ public class SeamCarving {
 				{8,21,29,39},
 				{74,80,100,200}
 		};
-		int[][] interrest = interest(test);
+		System.out.println("Tableau test :");
+		affichageTableau(test);
+		Graph g = toGraph(test);
+		g.writeFile("src/test.dot");
 	}
 	
 	public static int[][] readpgm(String fn) {
@@ -73,6 +76,10 @@ public class SeamCarving {
 				}
 			}
 		}
+		
+		// Afichage du tableau d'interet
+		System.out.println("Tableau d'interets :");
+		affichageTableau(rep);
 		return rep;
 	}
 	
@@ -100,9 +107,9 @@ public class SeamCarving {
 				}
 	}
 
-	public static void Affichage(String fn) throws IOException{
+	public static void AffichagePgm(String fn) throws IOException{
 		   
-		   InputStream f = ClassLoader.getSystemClassLoader().getResourceAsStream(fn);
+		InputStream f = ClassLoader.getSystemClassLoader().getResourceAsStream(fn);
 	    BufferedReader d = new BufferedReader(new InputStreamReader(f));
 	    String line = "";
 	    while ((line = d.readLine()) != null) {
@@ -113,7 +120,10 @@ public class SeamCarving {
 	public static Graph toGraph(int[][]tab){
 		
 		int N = tab.length * tab[0].length+2;
-		Graph rep = new Graph(tab.length * (tab[0].length+2));
+		Graph rep = new Graph(N);
+		int aux[][] = interest(tab);
+		
+		System.out.println("Capacites :");
 		
 		for(int i=1; i <= tab.length;i++){
 			rep.addEdge(new Edge(0,i,Integer.MAX_VALUE,0));
@@ -122,7 +132,7 @@ public class SeamCarving {
 		for(int i = 1; i < N-1; i++){
 			
 			boolean gauche = 1 <= i && i <= tab.length;
-			boolean droite = (N-2-tab.length) < i && i < N-2;
+			boolean droite = (N-2-tab.length) < i && i <= N-2;
 			boolean haut = (i-1)%tab.length == 0;
 			boolean bas = i%tab.length == 0;
 			
@@ -136,41 +146,34 @@ public class SeamCarving {
 				rep.addEdge(new Edge(i, i-tab.length+1, Integer.MAX_VALUE, 0));
 			}
 			if(!droite){
-				int aux[][] = interest(tab);
-				rep.addEdge(new Edge(i, i+tab.length, capacity(aux,N), 0));
+				rep.addEdge(new Edge(i, i+tab.length, capacity(aux,i), 0));
 			}
+		}
+		for(int i=(N-1)-tab.length;i<N-1;i++){
+			rep.addEdge(new Edge(i,N-1,capacity(aux,i),0));
 		}
 		return rep;
 	}
 	
 	public static int capacity(int [][]tab, int N){
-		N=N-1;
-		/*System.out.println("tab.length = "+tab[0].length);
-		System.out.println("N = "+N);
-		System.out.println("(N / tab.length) - 1 = "+N/tab[0].length);
-		System.out.println("N % tab.length = "+N%tab[0].length);
-		System.out.println(tab[N/tab[0].length][N%tab[0].length]);*/
 		
-		return tab[N/tab[0].length][N%tab[0].length];
+		//Affichage capacity
+		
+		System.out.print(tab[(N-1)%tab.length][(N-1)/tab.length]+" ");
+		
+		return tab[(N-1)%tab.length][(N-1)/tab.length];
 	}
-
-	//TODO a degager pour le rendu sert juste a faire des tests
-	public static void main(String[] args) {
+	
+	public static void affichageTableau(int [][]tab){
 		
-		/*try {
-			Affichage("ex1.pgm");
-   		} catch (IOException e) {
-   			// TODO Auto-generated catch block
-   			e.printStackTrace();
-   	 	}*/
+		for(int i=0; i<tab.length; i++){
+			   for(int j=0; j<tab[i].length; j++){
+				    System.out.print(tab[i][j]+" ");
+			   }
+			   System.out.println();
+			}
+		System.out.println();
 		
-		//new SeamCarving();
-   	
-		int tab[][] = { {8,1,5}, {3,2,9}, {4,6,7} };
-		//writepgm(tab, "test");
-		
-		
-		capacity(tab,1);
 	}
 	
 	public static int[] minFlowMaxByRow(int[][] interest){
@@ -185,5 +188,19 @@ public class SeamCarving {
 		return rep;
 	}
 
-}
+	//TODO a degager pour lse rendu sert juste a faire des tests
+	public static void main(String[] args) {
+		
+		/* Affichage d'un pgm
 
+		try {
+			AffichagePgm("ex1.pgm");
+   		} catch (IOException e) {
+   			// TODO Auto-generated catch block
+   			e.printStackTrace();
+   	 	}*/
+		
+		new SeamCarving();
+	}
+
+}
