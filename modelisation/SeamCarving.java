@@ -374,24 +374,38 @@ public class SeamCarving {
 	}
 	
 	//Methode initFlow qui attribut un flow initial a la totalité du graph
-		public static void initFlow(Graph g){
+	public static void initFlow(Graph g){
+		
+		int minFlow [] = minFlowMaxByRow(interest);
+		
+		ArrayList<Edge> arretesNoeudZero = (ArrayList<Edge>) g.adj(0);
+		for(int i=0; i<arretesNoeudZero.size(); i++){
+			arretesNoeudZero.get(i).used=minFlow[i];
+		}
+		
+		ArrayList<Edge> arretesDernierNoeud = (ArrayList<Edge>) g.adj(N-1);
+		for(int i=0; i<arretesDernierNoeud.size(); i++){
+			arretesDernierNoeud.get(i).used=minFlow[i];
+		}
+		
+		int compteur = 0;
+		
+		for(int i=1; i<=N-2-minFlow.length; i++){
 			
-			int minFlow [] = minFlowMaxByRow(interest);
+			int nextNoeud = getSuccesseur(g, i, minFlow.length);
 			
-			ArrayList<Edge> arretesNoeudZero = (ArrayList<Edge>) g.adj(0);
-			for(int i=0; i<arretesNoeudZero.size(); i++){
-				arretesNoeudZero.get(i).used=minFlow[i];
+			if(compteur == minFlow.length){
+				compteur=1;
+			}
+			else{
+				compteur ++;
 			}
 			
-			ArrayList<Edge> arretesDernierNoeud = (ArrayList<Edge>) g.adj((N)-1);
-			for(int i=0; i<arretesDernierNoeud.size(); i++){
-				arretesDernierNoeud.get(i).used=minFlow[(minFlow.length)-1];
-			}
-			
-			
+			getArrete(i,nextNoeud,g).used=minFlow[compteur-1];
 			
 		}
-
+		
+	}
 	//TODO a degager pour le rendu sert juste a faire des tests
 	public static void main(String[] args) {
 		
