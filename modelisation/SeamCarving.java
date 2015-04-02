@@ -264,5 +264,34 @@ public class SeamCarving {
 		
 		new SeamCarving();
 	}
+	
+	/**
+	 * prend un tableau representant l'image (les valeurs lu par readpgm)
+	 * @param image
+	 * @param lesArretes les arretes qui doivent être coupé
+	 * @return
+	 */
+	public static int[][] supprCoupe(int[][] image, Edge[] lesArretes){
+		int[][] rep = new int[image.length][image[0].length-1];
+		for(int indexI = 0; indexI < image.length; indexI++){
+			boolean suppr = false;
+			Edge arrete = lesArretes[indexI];
+			int src = arrete.from;
+			int h = (src-1)%image.length;
+			int l = (src-1)/image[0].length;
+			for(int indexJ = 0; indexJ < rep[0].length; indexJ++){
+				if((h == indexI) && (l == indexJ)){
+					suppr = true;
+					rep[indexI][indexJ] = image[indexI][indexJ+1];
+				}else{
+					if(suppr)
+						rep[indexI][indexJ] = image[indexI][indexJ+1];
+					else
+						rep[indexI][indexJ] = image[indexI][indexJ];
+				}
+			}
+		}
+		return rep;
+	}
 
 }
