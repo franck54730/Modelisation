@@ -6,9 +6,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class SeamCarving {
+	
+	public static int N;
+	public static int[][] interest;
 
 	//TODO a degager pour le rendu sert juste a faire des tests
 	public SeamCarving(){
@@ -119,9 +123,9 @@ public class SeamCarving {
 	
 	public static Graph toGraph(int[][]tab){
 		
-		int N = tab.length * tab[0].length+2;
+		N = tab.length * tab[0].length+2;
 		Graph rep = new Graph(N);
-		int aux[][] = interest(tab);
+		interest = interest(tab);
 		
 		System.out.println("Capacites :");
 		
@@ -146,11 +150,11 @@ public class SeamCarving {
 				rep.addEdge(new Edge(i, i-tab.length+1, Integer.MAX_VALUE, 0));
 			}
 			if(!droite){
-				rep.addEdge(new Edge(i, i+tab.length, capacity(aux,i), 0));
+				rep.addEdge(new Edge(i, i+tab.length, capacity(interest,i), 0));
 			}
 		}
 		for(int i=(N-1)-tab.length;i<N-1;i++){
-			rep.addEdge(new Edge(i,N-1,capacity(aux,i),0));
+			rep.addEdge(new Edge(i,N-1,capacity(interest,i),0));
 		}
 		return rep;
 	}
@@ -187,8 +191,66 @@ public class SeamCarving {
 		}
 		return rep;
 	}
+	
+	// Methode getArrete qui retourne une arrete entre deux noeuds
+	public Edge getArrete(int numeroNoeudSource, int numeroNoeudDestination, Graph g){
+		Edge rep = null;
+		ArrayList<Edge> lesArretes = (ArrayList<Edge>) g.adj(numeroNoeudSource);
+		for(int i=0; i<lesArretes.size(); i++){
+			if(lesArretes.get(i).from == numeroNoeudSource && lesArretes.get(i).to == numeroNoeudDestination){
+				rep = lesArretes.get(i);
+			}
+		}
+		return rep;
+	}
+	
+	// Methode capacity qui retourne la capacity d'une arrete
+	public int capacity(Edge e){
+		return e.capacity-e.used;
+	}
+	
+	//Methode atteignable qui retourne un boolean permettant de savoir si un noeud est atteignable
+	public boolean atteignable (Edge e){
+		if(capacity(e) > 0){
+			return true;
+		}
+		return false;
+	}
+	
+	//Methode getSuccesseur qui retourne le successeur d'un noeud
+	public int getSuccesseur (Graph g, int Noeud, int h){
 
-	//TODO a degager pour lse rendu sert juste a faire des tests
+		//boolean gauche = 1 <= N && N <= h+1;
+		boolean droite = this.N -1-h <= Noeud && Noeud <= this.N - 2;
+		if(Noeud==0){
+			return 0;
+		}
+		else if(!droite){
+			return Noeud+h;
+		}
+		else return this.N-1;
+	}
+	
+	//Methode initFlow qui attribut un flow initial a la totalité du graph
+		public void initFlow(Graph g){
+			
+			int minFlow [] = minFlowMaxByRow(interest);
+			
+			ArrayList<Edge> arretesNoeudZero = (ArrayList<Edge>) g.adj(0);
+			for(int i=0; i<arretesNoeudZero.size(); i++){
+				arretesNoeudZero.get(i).used=minFlow[i];
+			}
+			
+			ArrayList<Edge> arretesDernierNoeud = (ArrayList<Edge>) g.adj((this.N)-1);
+			for(int i=0; i<arretesDernierNoeud.size(); i++){
+				arretesDernierNoeud.get(i).used=minFlow[(minFlow.length)-1];
+			}
+			
+			
+			
+		}
+
+	//TODO a degager pour le rendu sert juste a faire des tests
 	public static void main(String[] args) {
 		
 		/* Affichage d'un pgm
