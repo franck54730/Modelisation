@@ -193,7 +193,7 @@ public class SeamCarving {
 	}
 	
 	// Methode getArrete qui retourne une arrete entre deux noeuds
-	public Edge getArrete(int numeroNoeudSource, int numeroNoeudDestination, Graph g){
+	public static Edge getArrete(int numeroNoeudSource, int numeroNoeudDestination, Graph g){
 		Edge rep = null;
 		ArrayList<Edge> lesArretes = (ArrayList<Edge>) g.adj(numeroNoeudSource);
 		for(int i=0; i<lesArretes.size(); i++){
@@ -205,12 +205,12 @@ public class SeamCarving {
 	}
 	
 	// Methode capacity qui retourne la capacity d'une arrete
-	public int capacity(Edge e){
+	public static int capacity(Edge e){
 		return e.capacity-e.used;
 	}
 	
 	//Methode atteignable qui retourne un boolean permettant de savoir si un noeud est atteignable
-	public boolean atteignable (Edge e){
+	public static boolean atteignable (Edge e){
 		if(capacity(e) > 0){
 			return true;
 		}
@@ -261,7 +261,7 @@ public class SeamCarving {
 	}
 		
 
-	public void nextFlow(Graph g, ArrayList<Integer> chemin){
+	public static void nextFlow(Graph g, ArrayList<Integer> chemin){
 		int min = Integer.MAX_VALUE;
 		for (int i = 0; i < chemin.size()-2; i++) {
 			int source = chemin.get(i);
@@ -277,7 +277,7 @@ public class SeamCarving {
 		}
 	}
 
-	public boolean parcouru(int noeud, ArrayList<Integer>[] tab){
+	public static boolean parcouru(int noeud, ArrayList<Integer>[] tab){
 		boolean res = false;
 		for(int i = 0 ; i < tab.length ; i++){
 			if(tab[i].contains(noeud))res = true;
@@ -285,11 +285,11 @@ public class SeamCarving {
 		return res;
 	}
 
-	public boolean sortante(Edge e, int noeudDestination){
+	public static boolean sortante(Edge e, int noeudDestination){
 		return e.from == noeudDestination;
 	}
 	
-	public ArrayList<Integer> rechercheChemin(Graph g){
+	public static ArrayList<Integer> rechercheChemin(Graph g){
 		
 		/* tableau des differents chemins possibles */
 		ArrayList<Integer>[] tabChemin = new ArrayList[interest.length];
@@ -360,7 +360,7 @@ public class SeamCarving {
 		else return null;
 	}
 	
-	public void FlowMax(Graph g){
+	public static void FlowMax(Graph g){
 		initFlow(g);
 		boolean max = false;
 		while(!max){
@@ -374,7 +374,7 @@ public class SeamCarving {
 	}
 	
 	//Methode initFlow qui attribut un flow initial a la totalité du graph
-		public void initFlow(Graph g){
+		public static void initFlow(Graph g){
 			
 			int minFlow [] = minFlowMaxByRow(interest);
 			
@@ -383,7 +383,7 @@ public class SeamCarving {
 				arretesNoeudZero.get(i).used=minFlow[i];
 			}
 			
-			ArrayList<Edge> arretesDernierNoeud = (ArrayList<Edge>) g.adj((this.N)-1);
+			ArrayList<Edge> arretesDernierNoeud = (ArrayList<Edge>) g.adj((N)-1);
 			for(int i=0; i<arretesDernierNoeud.size(); i++){
 				arretesDernierNoeud.get(i).used=minFlow[(minFlow.length)-1];
 			}
@@ -434,6 +434,12 @@ public class SeamCarving {
 			}
 		}
 		return rep;
+	}
+	
+	public static int[][] supprColonne(int[][] image){
+		Graph g = toGraph(image);
+		FlowMax(g);
+		return image;
 	}
 
 }
