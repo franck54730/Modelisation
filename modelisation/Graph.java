@@ -26,6 +26,10 @@ public class Graph {
 	public int vertices() {
 		return V;
 	}
+	
+	public ArrayList<Edge>[] getAdj(){
+		return adj;
+	}
 
 	public void addEdge(Edge e) {
 		int v = e.from;
@@ -35,6 +39,10 @@ public class Graph {
 	}
 
 	public final Iterable<Edge> adj(int v) {
+		return adj[v];
+	}
+	
+	public final ArrayList<Edge> adj2(int v) {
 		return adj[v];
 	}
 
