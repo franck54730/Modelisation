@@ -394,14 +394,15 @@ public class SeamCarving {
 			
 			int nextNoeud = getSuccesseur(g, i, minFlow.length);
 			
-			if(compteur == minFlow.length){
-				compteur=1;
-			}
-			else{
-				compteur ++;
-			}
-			
-			getArrete(i,nextNoeud,g).used=minFlow[compteur-1];
+//			if(compteur == minFlow.length){
+//				compteur=1;
+//			}
+//			else{
+//				compteur ++;
+//			}
+//			
+			int ligneCourant = (i-1)%minFlow.length;
+			getArrete(i,nextNoeud,g).used=minFlow[ligneCourant];
 			
 		}
 		
