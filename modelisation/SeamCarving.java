@@ -218,20 +218,20 @@ public class SeamCarving {
 	}
 	
 	//Methode getSuccesseur qui retourne le successeur d'un noeud
-	public int getSuccesseur (Graph g, int Noeud, int h){
+	public static int getSuccesseur (Graph g, int Noeud, int h){
 
 		//boolean gauche = 1 <= N && N <= h+1;
-		boolean droite = this.N -1-h <= Noeud && Noeud <= this.N - 2;
+		boolean droite = N -1-h <= Noeud && Noeud <= N - 2;
 		if(Noeud==0){
 			return 0;
 		}
 		else if(!droite){
 			return Noeud+h;
 		}
-		else return this.N-1;
+		else return N-1;
 	}
 	
-	public Edge[] getCoupe(Graph g, int nbLignes){
+	public static Edge[] getCoupe(Graph g, int nbLignes){
 		Edge[] rep = new Edge[nbLignes];
 		boolean[] tabTrouve = new boolean[nbLignes];
 		int cmptIterations = 0;
@@ -439,7 +439,9 @@ public class SeamCarving {
 	public static int[][] supprColonne(int[][] image){
 		Graph g = toGraph(image);
 		FlowMax(g);
-		return image;
+		Edge[] coupe = getCoupe(g, N);
+		int [][] rep = supprCoupe(image, coupe);
+		return rep;
 	}
 
 }
