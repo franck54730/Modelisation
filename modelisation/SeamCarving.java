@@ -231,6 +231,148 @@ public class SeamCarving {
 		else return this.N-1;
 	}
 	
+	public Edge[] getCoupe(Graph g, int nbLignes){
+		Edge[] rep = new Edge[nbLignes];
+		boolean[] tabTrouve = new boolean[nbLignes];
+		int cmptIterations = 0;
+		for (int i = 0; i < tabTrouve.length; i++) {
+			tabTrouve[i]=false;
+		}
+		ArrayList<Edge>[] lesNoeuds = g.getAdj();
+		boolean fini = false;
+		int ligneCourante = 0;
+		int i = 1;
+		while(!fini && i<lesNoeuds.length-1){
+			if(!tabTrouve[ligneCourante]){
+				Edge e = getArrete(i, getSuccesseur(g,i,nbLignes), g);
+				if(capacity(e) == 0){
+					cmptIterations++;
+					rep[ligneCourante] = e;
+					tabTrouve[ligneCourante]=true;
+				}
+				fini = (tabTrouve.length == cmptIterations);
+				i++;
+				ligneCourante++;
+				if(ligneCourante == nbLignes)ligneCourante=0;
+			}
+			
+		}
+		return rep;
+	}
+		
+
+	public void nextFlow(Graph g, ArrayList<Integer> chemin){
+		int min = Integer.MAX_VALUE;
+		for (int i = 0; i < chemin.size()-2; i++) {
+			int source = chemin.get(i);
+			int destination = chemin.get(i+1);
+			Edge e = getArrete(source, destination,g);
+			if(capacity(e)<min) min = capacity(e);
+		}
+		for (int i = 0; i < chemin.size()-2; i++) {
+			int source = chemin.get(i);
+			int destination = chemin.get(i+1);
+			Edge e = getArrete(source, destination, g);
+			e.used += min;
+		}
+	}
+
+	public boolean parcouru(int noeud, ArrayList<Integer>[] tab){
+		boolean res = false;
+		for(int i = 0 ; i < tab.length ; i++){
+			if(tab[i].contains(noeud))res = true;
+		}
+		return res;
+	}
+
+	public boolean sortante(Edge e, int noeudDestination){
+		return e.from == noeudDestination;
+	}
+	
+	public ArrayList<Integer> rechercheChemin(Graph g){
+		
+		/* tableau des differents chemins possibles */
+		ArrayList<Integer>[] tabChemin = new ArrayList[interest.length];
+		for (int i = 0; i < tabChemin.length; i++) {
+			tabChemin[i] = new ArrayList<Integer>();
+			tabChemin[i].add(0);
+			tabChemin[i].add(i+1);
+		}
+		/* chemin que l'on va emprunter */
+		ArrayList<Integer> chemin = null;
+		/* tableau de "validité" des differents chemin possibles */
+		boolean[] tabUtilise = new boolean[tabChemin.length];
+		/* on met les cases par défaut à true */
+		for(int a = 0; a < tabUtilise.length ; a++){
+			tabUtilise[a] = true;
+		}
+		boolean fini = false;
+		
+		/* tant qu'on n'a tout testé  */
+		while(!fini){
+			for(int i=0;i<tabChemin.length;i++){
+				if(tabUtilise[i]){
+					chemin = tabChemin[i];
+					int noeud = chemin.get(chemin.size()-1);
+					boolean trouve = false;
+					ArrayList<Edge> leNoeud = g.adj2(noeud);
+					int nbArretes = leNoeud.size();
+					int j = 0;
+					
+					/* tant qu'on n'a pas trouvé de chemin */
+					while(!trouve && j < nbArretes){
+						Edge e = leNoeud.get(j);
+						if(sortante(e,noeud)){
+							if(atteignable(e)){
+								int noeudDest = e.to;
+								if(!parcouru(noeudDest,tabChemin)){
+									chemin.add(noeudDest);
+									trouve = true;
+								}
+							}
+						}
+						j++;
+					}
+					if(!trouve)tabUtilise[i] = false;
+				}
+			}
+			fini = true;
+			for(int b = 0 ; b< tabUtilise.length ; b++){
+					if(tabUtilise[b]){
+						fini = false;
+						b = tabUtilise.length; // on evite de continuer si on a trouvé un chemin 
+					}
+					if(!fini){
+						//si dernier dedans fini
+						if(chemin.contains(N-1))fini=true;
+					}
+				}
+				/*int b = 0;
+				while(!fini && b<tabUtilise.length){
+					System.out.println(tabUtilise[b]);
+					if(tabUtilise[b])fini = true;
+					b++;
+				}*/
+			
+			//
+		}
+		if(!chemin.isEmpty())return chemin;
+		else return null;
+	}
+	
+	public void FlowMax(Graph g){
+		initFlow(g);
+		boolean max = false;
+		while(!max){
+			ArrayList<Integer> chemin = rechercheChemin(g);
+			if(chemin == null){
+				max = true;
+			}else{
+				nextFlow(g, chemin);
+			}
+		}
+	}
+	
 	//Methode initFlow qui attribut un flow initial a la totalité du graph
 		public void initFlow(Graph g){
 			
