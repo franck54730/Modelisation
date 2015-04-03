@@ -85,7 +85,7 @@ public class SeamCarving {
 		return rep;
 	}
 	
-	public void writepgm(){
+	public void writepgm(String test){
 		   try {
 			   FileWriter fw = new FileWriter("src/"+fileName+".pgm", true);
 			   BufferedWriter output = new BufferedWriter(fw);
@@ -119,42 +119,41 @@ public class SeamCarving {
 	    }
 	}
 	
-	public Graph toGraph(int[][]tab){
+	public void toGraph(){
 		
-		N = tab.length * tab[0].length+2;
-		Graph rep = new Graph(N);
+		N = image.length * image[0].length+2;
+		g = new Graph(N);
 		interest = interest();
 		
 		System.out.println("Capacites :");
 		
-		for(int i=1; i <= tab.length;i++){
-			rep.addEdge(new Edge(0,i,Integer.MAX_VALUE,0));
+		for(int i=1; i <= image.length;i++){
+			g.addEdge(new Edge(0,i,Integer.MAX_VALUE,0));
 		}
 		
 		for(int i = 1; i < N-1; i++){
 			
-			boolean gauche = 1 <= i && i <= tab.length;
-			boolean droite = (N-2-tab.length) < i && i <= N-2;
-			boolean haut = (i-1)%tab.length == 0;
-			boolean bas = i%tab.length == 0;
+			boolean gauche = 1 <= i && i <= image.length;
+			boolean droite = (N-2-image.length) < i && i <= N-2;
+			boolean haut = (i-1)%image.length == 0;
+			boolean bas = i%image.length == 0;
 			
 			if(!gauche){
-				rep.addEdge(new Edge(i, i-tab.length, Integer.MAX_VALUE, 0));
+				g.addEdge(new Edge(i, i-image.length, Integer.MAX_VALUE, 0));
 			}
 			if(!gauche && !haut){
-				rep.addEdge(new Edge(i, i-tab.length-1, Integer.MAX_VALUE, 0));
+				g.addEdge(new Edge(i, i-image.length-1, Integer.MAX_VALUE, 0));
 			}
 			if(!gauche && !bas){
-				rep.addEdge(new Edge(i, i-tab.length+1, Integer.MAX_VALUE, 0));
+				g.addEdge(new Edge(i, i-image.length+1, Integer.MAX_VALUE, 0));
 			}
 			if(!droite){
-				rep.addEdge(new Edge(i, i+tab.length, capacity(i), 0));
+				g.addEdge(new Edge(i, i+image.length, capacity(i), 0));
 			}
 		}
-		for(int i=(N-1)-tab.length;i<N-1;i++){
-			rep.addEdge(new Edge(i,N-1,capacity(i),0));
+		for(int i=(N-1)-image.length;i<N-1;i++){
+			g.addEdge(new Edge(i,N-1,capacity(i),0));
 		}
-		return rep;
 	}
 	
 	public int capacity(int N){
@@ -259,7 +258,7 @@ public class SeamCarving {
 	}
 		
 
-	public void nextFlow(Graph g, ArrayList<Integer> chemin){
+	public void nextFlow(){
 		int min = Integer.MAX_VALUE;
 		for (int i = 0; i < chemin.size()-2; i++) {
 			int source = chemin.get(i);
@@ -287,7 +286,7 @@ public class SeamCarving {
 		return e.from == noeudDestination;
 	}
 	
-	public ArrayList<Integer> rechercheChemin(){
+	public void rechercheChemin(){
 		
 		/* tableau des differents chemins possibles */
 		ArrayList<Integer>[] tabChemin = new ArrayList[interest.length];
@@ -297,7 +296,7 @@ public class SeamCarving {
 			tabChemin[i].add(i+1);
 		}
 		/* chemin que l'on va emprunter */
-		ArrayList<Integer> chemin = null;
+		chemin = null;
 		/* tableau de "validité" des differents chemin possibles */
 		boolean[] tabUtilise = new boolean[tabChemin.length];
 		/* on met les cases par défaut à true */
@@ -354,19 +353,17 @@ public class SeamCarving {
 			
 			//
 		}
-		if(!chemin.isEmpty())return chemin;
-		else return null;
 	}
 	
 	public void flowMax(){
 		initFlow();
 		boolean max = false;
 		while(!max){
-			ArrayList<Integer> chemin = rechercheChemin();
+			rechercheChemin();
 			if(chemin == null){
 				max = true;
 			}else{
-				nextFlow(g, chemin);
+				nextFlow();
 			}
 		}
 	}
@@ -405,20 +402,6 @@ public class SeamCarving {
 		}
 		
 	}
-	//TODO a degager pour le rendu sert juste a faire des tests
-	public static void main(String[] args) {
-		
-		/* Affichage d'un pgm
-
-		try {
-			AffichagePgm("ex1.pgm");
-   		} catch (IOException e) {
-   			// TODO Auto-generated catch block
-   			e.printStackTrace();
-   	 	}*/
-		
-		new SeamCarving("");
-	}
 	
 	/**
 	 * prend un tableau representant l'image (les valeurs lu par readpgm)
@@ -426,7 +409,7 @@ public class SeamCarving {
 	 * @param lesArretes les arretes qui doivent être coupé
 	 * @return
 	 */
-	public int[][] supprCoupe(Edge[] lesArretes){
+	public void supprCoupe(Edge[] lesArretes){
 		int[][] rep = new int[image.length][image[0].length-1];
 		for(int indexI = 0; indexI < image.length; indexI++){
 			boolean suppr = false;
@@ -446,15 +429,21 @@ public class SeamCarving {
 				}
 			}
 		}
-		return rep;
+		image = rep;
 	}
 	
-	public int[][] supprColonne(int[][] image){
-		Graph g = toGraph(image);
+	public void supprColonne(){
+		toGraph();
 		flowMax();
 		Edge[] coupe = getCoupe();
-		int [][] rep = supprCoupe(coupe);
-		return rep;
+		supprCoupe(coupe);
+	}
+	
+	//TODO a degager pour le rendu sert juste a faire des tests
+	public static void main(String[] args) {
+		SeamCarving sc = new SeamCarving("test.pgm");
+		sc.supprColonne();
+		sc.writepgm("test2.pgm");
 	}
 
 }
