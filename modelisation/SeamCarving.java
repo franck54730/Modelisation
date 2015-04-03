@@ -360,7 +360,7 @@ public class SeamCarving {
 		else return null;
 	}
 	
-	public static void FlowMax(Graph g){
+	public static void flowMax(Graph g){
 		initFlow(g);
 		boolean max = false;
 		while(!max){
@@ -438,7 +438,7 @@ public class SeamCarving {
 	
 	public static int[][] supprColonne(int[][] image){
 		Graph g = toGraph(image);
-		FlowMax(g);
+		flowMax(g);
 		Edge[] coupe = getCoupe(g, N);
 		int [][] rep = supprCoupe(image, coupe);
 		return rep;
