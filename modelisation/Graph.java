@@ -68,5 +68,18 @@ public class Graph {
 		} catch (IOException e) {
 		}
 	}
+	
+	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < adj.length; i++){
+			sb.append("{ ");
+			ArrayList<Edge> al = adj[i];
+			for(Edge e : al){
+				sb.append(e+",");
+			}
+			sb.append(" }\n");
+		}
+		return sb.toString();
+	}
 
 }
