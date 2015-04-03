@@ -9,26 +9,28 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class SeamCarving {
+public class SeamCarvingSave {
 	
-	private int N;
-	private int[][] interest;
-	private Graph g;
-	private int[][] image;
-	private String fileName;
-	private ArrayList<Integer> chemin;
+	public static int N;
+	public static int[][] interest;
 
 	//TODO a degager pour le rendu sert juste a faire des tests
-	public SeamCarving(String fn){
-		fileName = fn;
-		image = readpgm();
-		//g.writeFile("src/test.dot");
+	public SeamCarvingSave(){
+		int[][] test = {
+				{3,11,24,39},
+				{8,21,29,39},
+				{74,80,100,200}
+		};
+		System.out.println("Tableau test :");
+		affichageTableau(test);
+		Graph g = toGraph(test);
+		g.writeFile("src/test.dot");
 	}
 	
-	public int[][] readpgm() {
+	public static int[][] readpgm(String fn) {
 		try {
 			InputStream f = ClassLoader.getSystemClassLoader()
-					.getResourceAsStream(fileName);
+					.getResourceAsStream(fn);
 			BufferedReader d = new BufferedReader(new InputStreamReader(f));
 			String magic = d.readLine();
 			String line = d.readLine();
@@ -57,7 +59,7 @@ public class SeamCarving {
 		}
 	}
 
-	public int[][] interest() {
+	public static int[][] interest(int[][] image) {
 		int hauteur = image.length;
 		int[][] rep = null;
 		if (hauteur > 0) {
@@ -85,9 +87,9 @@ public class SeamCarving {
 		return rep;
 	}
 	
-	public void writepgm(){
+	public static void writepgm(int[][] image, String filename){
 		   try {
-			   FileWriter fw = new FileWriter("src/"+fileName+".pgm", true);
+			   FileWriter fw = new FileWriter("src/"+filename+".pgm", true);
 			   BufferedWriter output = new BufferedWriter(fw);
 			   output.write("P2\n");
 			   output.write(image.length+" ");
@@ -109,9 +111,9 @@ public class SeamCarving {
 				}
 	}
 
-	public void AffichagePgm() throws IOException{
+	public static void AffichagePgm(String fn) throws IOException{
 		   
-		InputStream f = ClassLoader.getSystemClassLoader().getResourceAsStream(fileName);
+		InputStream f = ClassLoader.getSystemClassLoader().getResourceAsStream(fn);
 	    BufferedReader d = new BufferedReader(new InputStreamReader(f));
 	    String line = "";
 	    while ((line = d.readLine()) != null) {
@@ -119,11 +121,11 @@ public class SeamCarving {
 	    }
 	}
 	
-	public Graph toGraph(int[][]tab){
+	public static Graph toGraph(int[][]tab){
 		
 		N = tab.length * tab[0].length+2;
 		Graph rep = new Graph(N);
-		interest = interest();
+		interest = interest(tab);
 		
 		System.out.println("Capacites :");
 		
@@ -148,25 +150,25 @@ public class SeamCarving {
 				rep.addEdge(new Edge(i, i-tab.length+1, Integer.MAX_VALUE, 0));
 			}
 			if(!droite){
-				rep.addEdge(new Edge(i, i+tab.length, capacity(i), 0));
+				rep.addEdge(new Edge(i, i+tab.length, capacity(interest,i), 0));
 			}
 		}
 		for(int i=(N-1)-tab.length;i<N-1;i++){
-			rep.addEdge(new Edge(i,N-1,capacity(i),0));
+			rep.addEdge(new Edge(i,N-1,capacity(interest,i),0));
 		}
 		return rep;
 	}
 	
-	public int capacity(int N){
+	public static int capacity(int [][]tab, int N){
 		
 		//Affichage capacity
 		
-		System.out.print(interest[(N-1)%interest.length][(N-1)/interest.length]+" ");
+		System.out.print(tab[(N-1)%tab.length][(N-1)/tab.length]+" ");
 		
-		return interest[(N-1)%interest.length][(N-1)/interest.length];
+		return tab[(N-1)%tab.length][(N-1)/tab.length];
 	}
 	
-	public void affichageTableau(int [][]tab){
+	public static void affichageTableau(int [][]tab){
 		
 		for(int i=0; i<tab.length; i++){
 			   for(int j=0; j<tab[i].length; j++){
@@ -178,7 +180,7 @@ public class SeamCarving {
 		
 	}
 	
-	public int[] minFlowMaxByRow(){
+	public static int[] minFlowMaxByRow(int[][] interest){
 		int[] rep = new int[interest.length];
 		for(int i = 0; i < interest.length; i++){
 			int min = Integer.MAX_VALUE;
@@ -191,7 +193,7 @@ public class SeamCarving {
 	}
 	
 	// Methode getArrete qui retourne une arrete entre deux noeuds
-	public Edge getArrete(int numeroNoeudSource, int numeroNoeudDestination){
+	public static Edge getArrete(int numeroNoeudSource, int numeroNoeudDestination, Graph g){
 		Edge rep = null;
 		ArrayList<Edge> lesArretes = (ArrayList<Edge>) g.adj(numeroNoeudSource);
 		for(int i=0; i<lesArretes.size(); i++){
@@ -203,12 +205,12 @@ public class SeamCarving {
 	}
 	
 	// Methode capacity qui retourne la capacity d'une arrete
-	public int capacity(Edge e){
+	public static int capacity(Edge e){
 		return e.capacity-e.used;
 	}
 	
 	//Methode atteignable qui retourne un boolean permettant de savoir si un noeud est atteignable
-	public boolean atteignable (Edge e){
+	public static boolean atteignable (Edge e){
 		if(capacity(e) > 0){
 			return true;
 		}
@@ -216,22 +218,22 @@ public class SeamCarving {
 	}
 	
 	//Methode getSuccesseur qui retourne le successeur d'un noeud
-	public int getSuccesseur (int noeud){
+	public static int getSuccesseur (Graph g, int Noeud, int h){
 
 		//boolean gauche = 1 <= N && N <= h+1;
-		boolean droite = N -1-image.length <= noeud && noeud <= N - 2;
-		if(noeud==0){
+		boolean droite = N -1-h <= Noeud && Noeud <= N - 2;
+		if(Noeud==0){
 			return 0;
 		}
 		else if(!droite){
-			return noeud+image.length;
+			return Noeud+h;
 		}
 		else return N-1;
 	}
 	
-	public Edge[] getCoupe(){
-		Edge[] rep = new Edge[image.length];
-		boolean[] tabTrouve = new boolean[image.length];
+	public static Edge[] getCoupe(Graph g, int nbLignes){
+		Edge[] rep = new Edge[nbLignes];
+		boolean[] tabTrouve = new boolean[nbLignes];
 		int cmptIterations = 0;
 		for (int i = 0; i < tabTrouve.length; i++) {
 			tabTrouve[i]=false;
@@ -242,7 +244,7 @@ public class SeamCarving {
 		int i = 1;
 		while(!fini && i<lesNoeuds.length-1){
 			if(!tabTrouve[ligneCourante]){
-				Edge e = getArrete(i, getSuccesseur(i));
+				Edge e = getArrete(i, getSuccesseur(g,i,nbLignes), g);
 				if(capacity(e) == 0){
 					cmptIterations++;
 					rep[ligneCourante] = e;
@@ -251,7 +253,7 @@ public class SeamCarving {
 				fini = (tabTrouve.length == cmptIterations);
 				i++;
 				ligneCourante++;
-				if(ligneCourante == image.length)ligneCourante=0;
+				if(ligneCourante == nbLignes)ligneCourante=0;
 			}
 			
 		}
@@ -259,23 +261,23 @@ public class SeamCarving {
 	}
 		
 
-	public void nextFlow(Graph g, ArrayList<Integer> chemin){
+	public static void nextFlow(Graph g, ArrayList<Integer> chemin){
 		int min = Integer.MAX_VALUE;
 		for (int i = 0; i < chemin.size()-2; i++) {
 			int source = chemin.get(i);
 			int destination = chemin.get(i+1);
-			Edge e = getArrete(source, destination);
+			Edge e = getArrete(source, destination,g);
 			if(capacity(e)<min) min = capacity(e);
 		}
 		for (int i = 0; i < chemin.size()-2; i++) {
 			int source = chemin.get(i);
 			int destination = chemin.get(i+1);
-			Edge e = getArrete(source, destination);
+			Edge e = getArrete(source, destination, g);
 			e.used += min;
 		}
 	}
 
-	public boolean parcouru(int noeud, ArrayList<Integer>[] tab){
+	public static boolean parcouru(int noeud, ArrayList<Integer>[] tab){
 		boolean res = false;
 		for(int i = 0 ; i < tab.length ; i++){
 			if(tab[i].contains(noeud))res = true;
@@ -283,11 +285,11 @@ public class SeamCarving {
 		return res;
 	}
 
-	public boolean sortante(Edge e, int noeudDestination){
+	public static boolean sortante(Edge e, int noeudDestination){
 		return e.from == noeudDestination;
 	}
 	
-	public ArrayList<Integer> rechercheChemin(){
+	public static ArrayList<Integer> rechercheChemin(Graph g){
 		
 		/* tableau des differents chemins possibles */
 		ArrayList<Integer>[] tabChemin = new ArrayList[interest.length];
@@ -358,11 +360,11 @@ public class SeamCarving {
 		else return null;
 	}
 	
-	public void flowMax(){
-		initFlow();
+	public static void flowMax(Graph g){
+		initFlow(g);
 		boolean max = false;
 		while(!max){
-			ArrayList<Integer> chemin = rechercheChemin();
+			ArrayList<Integer> chemin = rechercheChemin(g);
 			if(chemin == null){
 				max = true;
 			}else{
@@ -372,9 +374,9 @@ public class SeamCarving {
 	}
 	
 	//Methode initFlow qui attribut un flow initial a la totalité du graph
-	public void initFlow(){
+	public static void initFlow(Graph g){
 		
-		int minFlow [] = minFlowMaxByRow();
+		int minFlow [] = minFlowMaxByRow(interest);
 		
 		ArrayList<Edge> arretesNoeudZero = (ArrayList<Edge>) g.adj(0);
 		for(int i=0; i<arretesNoeudZero.size(); i++){
@@ -390,7 +392,7 @@ public class SeamCarving {
 		
 		for(int i=1; i<=N-2-minFlow.length; i++){
 			
-			int nextNoeud = getSuccesseur(i);
+			int nextNoeud = getSuccesseur(g, i, minFlow.length);
 			
 //			if(compteur == minFlow.length){
 //				compteur=1;
@@ -400,7 +402,7 @@ public class SeamCarving {
 //			}
 //			
 			int ligneCourant = (i-1)%minFlow.length;
-			getArrete(i,nextNoeud).used=minFlow[ligneCourant];
+			getArrete(i,nextNoeud,g).used=minFlow[ligneCourant];
 			
 		}
 		
@@ -417,7 +419,7 @@ public class SeamCarving {
    			e.printStackTrace();
    	 	}*/
 		
-		new SeamCarving("");
+		new SeamCarvingSave();
 	}
 	
 	/**
@@ -426,7 +428,7 @@ public class SeamCarving {
 	 * @param lesArretes les arretes qui doivent être coupé
 	 * @return
 	 */
-	public int[][] supprCoupe(Edge[] lesArretes){
+	public static int[][] supprCoupe(int[][] image, Edge[] lesArretes){
 		int[][] rep = new int[image.length][image[0].length-1];
 		for(int indexI = 0; indexI < image.length; indexI++){
 			boolean suppr = false;
@@ -449,11 +451,11 @@ public class SeamCarving {
 		return rep;
 	}
 	
-	public int[][] supprColonne(int[][] image){
+	public static int[][] supprColonne(int[][] image){
 		Graph g = toGraph(image);
-		flowMax();
-		Edge[] coupe = getCoupe();
-		int [][] rep = supprCoupe(coupe);
+		flowMax(g);
+		Edge[] coupe = getCoupe(g, N);
+		int [][] rep = supprCoupe(image, coupe);
 		return rep;
 	}
 
