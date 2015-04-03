@@ -80,8 +80,7 @@ public class SeamCarving {
 		}
 		
 		// Afichage du tableau d'interet
-		System.out.println("Tableau d'interets :");
-		affichageTableau(rep);
+		//affichageTableau(rep);
 		return rep;
 	}
 	
@@ -125,7 +124,7 @@ public class SeamCarving {
 		g = new Graph(N);
 		interest = interest();
 		
-		System.out.println("Capacites :");
+		//System.out.println("Capacites :");
 		
 		for(int i=1; i <= image.length;i++){
 			g.addEdge(new Edge(0,i,Integer.MAX_VALUE,0));
@@ -160,7 +159,7 @@ public class SeamCarving {
 		
 		//Affichage capacity
 		
-		System.out.print(interest[(N-1)%interest.length][(N-1)/interest.length]+" ");
+		//System.out.print(interest[(N-1)%interest.length][(N-1)/interest.length]+" ");
 		
 		return interest[(N-1)%interest.length][(N-1)/interest.length];
 	}
@@ -442,8 +441,31 @@ public class SeamCarving {
 	//TODO a degager pour le rendu sert juste a faire des tests
 	public static void main(String[] args) {
 		SeamCarving sc = new SeamCarving("test.pgm");
-		sc.supprColonne();
-		sc.writepgm("test2.pgm");
+		sc.toGraph();
+		sc.initFlow();
+		sc.rechercheChemin();
+		System.out.println(sc.chemin);
+System.out.println(sc.toStringGraph());
+		//System.out.println(sc.g);
+		//sc.supprColonne();
+		//sc.writepgm("test2.pgm");
 	}
 
+	public String toStringGraph(){
+		StringBuilder sb = new StringBuilder();
+			int ligne = 0;
+			for(int i = 0; i < image.length; i++){
+				Edge e = getArrete(0, i+1);
+				sb.append("("+e.from+")"+"--"+e.used+"/"+Math.round(e.capacity)+"->"+"("+e.to+")");
+				int succ = i+1;
+				while(succ != N-1){
+					int succ2 = getSuccesseur(succ);
+					e = getArrete(succ, succ2);
+					sb.append("--"+e.used+"/"+Math.round(e.capacity)+"->"+"("+e.to+")");
+					succ = succ2;
+				}
+				sb.append("\n");
+			}
+			return sb.toString();
+	}
 }

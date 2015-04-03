@@ -69,7 +69,7 @@ public class Graph {
 		}
 	}
 	
-	public String toString(){
+	public String toString(int nbLigne){
 		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i < adj.length; i++){
 			sb.append("{ ");
