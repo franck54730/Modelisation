@@ -29,6 +29,20 @@ public class SeamCarving {
 		//g.writeFile("src/test.dot");
 	}
 	
+	public SeamCarving(){
+		N = 3;
+		interest = new int[3][3];
+		ArrayList<Integer> test = new ArrayList<Integer>();
+		test.add(0);
+		test.add(1);
+		test.add(2);
+		test.add(3);
+		test.add(4);
+		test.add(7);
+		test.add(5);
+		getCoupeFinale(N,test);
+	}
+	
 	public int[][] readpgm() {
 		try {
 			InputStream f = new FileInputStream(fileName);
@@ -629,4 +643,36 @@ public class SeamCarving {
 			}
 			return sb.toString();
 	}
+	
+	public int[] getCoupeFinale(int N, ArrayList<Integer> tab){
+		//Ici aux est de la forme largeur / hauteur
+
+		ArrayList<Integer>[] aux = new ArrayList[N];
+		for(int i=0; i<aux.length; i++){
+			aux[i] = new ArrayList<Integer>();
+		}
+		
+		for(int i=1; i<tab.size(); i++){
+			int ligne = tab.get(i)%N;
+			ligne = ligne == 0?N:ligne;
+			ligne--;
+			aux[ligne].add(tab.get(i));
+		}
+		
+		
+		int retour[];
+		retour = new int[N];
+		
+		for(int i=0; i<aux.length; i++){
+			retour[i]=aux[i].get(aux[i].size()-1);
+			//System.out.println(retour[i]);
+		}
+		
+		return retour;
+	}
+	
+	public static void main(String[] args)
+	 {
+			new SeamCarving();
+	 }
 }
