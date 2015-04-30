@@ -2,11 +2,15 @@ package modelisation;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class SeamCarving {
@@ -15,20 +19,19 @@ public class SeamCarving {
 	private int[][] interest;
 	private Graph g;
 	private int[][] image;
-	private String fileName;
+	private File fileName;
 	private ArrayList<Integer> chemin;
 
 	//TODO a degager pour le rendu sert juste a faire des tests
-	public SeamCarving(String fn){
-		fileName = fn;
+	public SeamCarving(File fichier){
+		fileName = fichier;
 		image = readpgm();
 		//g.writeFile("src/test.dot");
 	}
 	
 	public int[][] readpgm() {
 		try {
-			InputStream f = ClassLoader.getSystemClassLoader()
-					.getResourceAsStream(fileName);
+			InputStream f = new FileInputStream(fileName);
 			BufferedReader d = new BufferedReader(new InputStreamReader(f));
 			String magic = d.readLine();
 			String line = d.readLine();
@@ -85,36 +88,48 @@ public class SeamCarving {
 	}
 	
 	public void writepgm(String test){
-		   try {
-			   FileWriter fw = new FileWriter("src/"+fileName+".pgm", true);
-			   BufferedWriter output = new BufferedWriter(fw);
-			   output.write("P2\n");
-			   output.write(image.length+" ");
-			   output.write(image[0].length+"\n");
-			   output.write("255\n");
-			   for(int i=0; i<image.length; i++){
-				   for(int j=0; j<image[i].length; j++){
-					    output.write(image[i][j]+" ");
-				   }
-				   output.write("\n");
-			   }
-			   output.flush();
-			   output.close();
-			   System.out.println("fichier pgm cree");
-		   }
-		   catch(IOException ioe){
-				System.out.print(System.err);
-				ioe.printStackTrace();
-				}
-	}
-
-	public void AffichagePgm() throws IOException{
-		   
-		InputStream f = ClassLoader.getSystemClassLoader().getResourceAsStream(fileName);
-	    BufferedReader d = new BufferedReader(new InputStreamReader(f));
-	    String line = "";
-	    while ((line = d.readLine()) != null) {
-	 	   System.out.println(line);
+//		   try {
+//			   FileWriter fw = new FileWriter(test);
+//			   PrintWriter output = new PrintWriter(new BufferedWriter(fw));
+//			   output.println("P2");
+//			   output.print(image.length+" ");
+//			   output.print(image[0].length+"");
+//			   output.println("255");
+//			   for(int i=0; i<image.length; i++){
+//				   for(int j=0; j<image[i].length; j++){
+//					    output.print(image[i][j]+" ");
+//				   }
+//				   output.println("\n");
+//			   }
+//			   output.flush();
+//			   output.close();
+//			   System.out.println("fichier pgm cree");
+//		   }
+//		   catch(IOException ioe){
+//				System.out.print(System.err);
+//				ioe.printStackTrace();
+//			}
+		
+		int width = image[0].length;
+	    int height = image.length;
+	    try {
+	            PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(test)));
+	            pw.println("P2");
+	            pw.print(width);
+	            pw.print(" ");
+	            pw.println(height);
+	            pw.println("255");
+	            for(int i = 0; i< height; i++){
+	                    for(int j = 0; j<width; j++){
+	                            pw.print(image[i][j]);
+	                            pw.print(" ");
+	                    }
+	                    pw.println("\n");
+	            }
+	            pw.close();
+	    } catch (IOException e) {
+	           
+	            e.printStackTrace();
 	    }
 	}
 	
@@ -229,43 +244,209 @@ public class SeamCarving {
 	
 	public Edge[] getCoupe(){
 		Edge[] rep = new Edge[image.length];
-		boolean[] tabTrouve = new boolean[image.length];
-		int cmptIterations = 0;
-		for (int i = 0; i < tabTrouve.length; i++) {
-			tabTrouve[i]=false;
-		}
-		ArrayList<Edge>[] lesNoeuds = g.getAdj();
-		boolean fini = false;
-		int ligneCourante = 0;
-		int i = 1;
-		while(!fini && i<lesNoeuds.length-1){
-			if(!tabTrouve[ligneCourante]){
-				Edge e = getArrete(i, getSuccesseur(i));
-				if(capacity(e) == 0){
-					cmptIterations++;
-					rep[ligneCourante] = e;
-					tabTrouve[ligneCourante]=true;
+        boolean[] tabTrouve = new boolean[image.length];
+        int cmptIterations = 0;
+        for (int i = 0; i < tabTrouve.length; i++) {
+                tabTrouve[i]=false;
+        }
+        ArrayList<Edge>[] lesNoeuds = g.getAdj();
+        boolean fini = false;
+        int ligneCourante = 0;
+        int i = 1;
+        while(!fini && i<lesNoeuds.length-1){
+       
+                if(!tabTrouve[ligneCourante]){
+                        Edge e = getArrete(i, getSuccesseur(i));
+                        //int succ = getSuccesseur(i);
+                        //System.out.println(i+" "+succ);
+                        if(capacity(e) == 0){
+                                cmptIterations++;
+                                rep[ligneCourante] = e;
+                               
+                                tabTrouve[ligneCourante]=true;
+                        }
+                        //System.out.println(tabTrouve.length+" "+cmptIterations);
+                        fini = (tabTrouve.length == cmptIterations);
+                       
+                        //ligneCourante++;
+                        if(ligneCourante == image.length)ligneCourante=0;
+                }
+                ligneCourante=(i)%tabTrouve.length;
+                i++;
+        }
+        return rep;
+	}
+	/*
+	public Edge[] getCoupeProfondeur(){
+		Edge[] rep = new Edge[image.length];
+        ArrayList[] alArrete = new ArrayList[image.length];
+        for(int i = 0; i < image.length; i++){
+        	alArrete[i] = new ArrayList<Edge>();
+        }
+        for(int i = 0; i < image.length;i++ ){//pour chaque ligne
+        	ArrayList<Edge> allMinArrete = alArrete[i];
+        	int courant = i+1;
+        	int succ = getSuccesseur(courant);
+    		int minCapa = Integer.MAX_VALUE;
+        	while(succ != N-1){
+        		Edge arrete = getArrete(courant, succ);
+        		if(capacity(arrete) == 0){
+        			if(arrete.capacity < minCapa){
+        				minCapa = arrete.capacity;
+        				allMinArrete.clear();
+        				allMinArrete.add(arrete);
+        			}else if(arrete.capacity == minCapa){
+        				allMinArrete.add(arrete);
+        			}
+        		}
+        		courant = succ;
+        		succ = getSuccesseur(courant);
+        	}
+        }
+    	for(int i = 0; i < alArrete.length; i++){
+    		Random r = new Random();
+    		int index = r.nextInt(alArrete[i].size());
+    		Edge choisi = (Edge)alArrete[i].get(index);
+    		rep[i] = choisi;
+    	}
+        /*
+        int ligneCourante = 0;
+        int i = 1;
+        while(!fini && i<lesNoeuds.length-1){
+       
+                if(!tabTrouve[ligneCourante]){
+                        Edge e = getArrete(i, getSuccesseur(i));
+                        //int succ = getSuccesseur(i);
+                        //System.out.println(i+" "+succ);
+                        if(capacity(e) == 0){
+                                cmptIterations++;
+                                rep[ligneCourante] = e;
+                               
+                                tabTrouve[ligneCourante]=true;
+                        }
+                        //System.out.println(tabTrouve.length+" "+cmptIterations);
+                        fini = (tabTrouve.length == cmptIterations);
+                       
+                        //ligneCourante++;
+                        if(ligneCourante == image.length)ligneCourante=0;
+                }
+                ligneCourante=(i)%tabTrouve.length;
+                i++;
+        }
+        return rep;
+	}
+	
+	public Edge[] getCoupeContigu(){
+		Edge[] rep = new Edge[image.length];
+    	ArrayList<Edge> arreteMin = new ArrayList<Edge>();
+    	int courant = 1;
+    	int succ = getSuccesseur(courant);
+		int minCapa = Integer.MAX_VALUE;
+    	while(succ != N-1){
+    		Edge arrete = getArrete(courant, succ);
+    		if(capacity(arrete) == 0){
+    			if(arrete.capacity < minCapa){
+    				minCapa = arrete.capacity;
+    				arreteMin.clear();
+    				arreteMin.add(arrete);
+    			}else if(arrete.capacity == minCapa){
+    				arreteMin.add(arrete);
+    			}
+    		}
+    		courant = succ;
+    		succ = getSuccesseur(courant);
+        }
+		Random r = new Random();
+		int index = r.nextInt(arreteMin.size());
+		Edge choisi = arreteMin.get(index);
+		System.out.println(choisi);
+		rep[0] = choisi;
+		for(int ligne = 1; ligne < image.length; ligne++){
+			minCapa = Integer.MAX_VALUE;
+			ArrayList<Edge> suivants = new ArrayList<Edge>();//toto(choisi);
+			ArrayList<Edge> meilleurEdgeCapa = new ArrayList<Edge>();
+			for(int i = 0; i < suivants.size();i++){
+				Edge suivant = suivants.get(i);
+				int capacity = capacity(suivant); 
+				if(capacity < minCapa){
+					minCapa = capacity;
+					meilleurEdgeCapa.clear();
+					meilleurEdgeCapa.add(suivant);
+				}else if(capacity == minCapa){
+					meilleurEdgeCapa.add(suivant);
 				}
-				fini = (tabTrouve.length == cmptIterations);
-				i++;
-				ligneCourante++;
-				if(ligneCourante == image.length)ligneCourante=0;
 			}
-			
+			Edge good = null;
+			if(meilleurEdgeCapa.size() == 1){
+				
+			}else{
+				minCapa = Integer.MAX_VALUE;
+				for(int i = 0; i < meilleurEdgeCapa.size();i++){
+					Edge suivant = meilleurEdgeCapa.get(i);
+					if(suivant.capacity < minCapa){
+	    				minCapa = suivant.capacity;
+	    				good =suivant;
+	    			}
+				}
+			}
+			rep[1]=good;
+		}
+        /*
+        int ligneCourante = 0;
+        int i = 1;
+        while(!fini && i<lesNoeuds.length-1){
+       
+                if(!tabTrouve[ligneCourante]){
+                        Edge e = getArrete(i, getSuccesseur(i));
+                        //int succ = getSuccesseur(i);
+                        //System.out.println(i+" "+succ);
+                        if(capacity(e) == 0){
+                                cmptIterations++;
+                                rep[ligneCourante] = e;
+                               
+                                tabTrouve[ligneCourante]=true;
+                        }
+                        //System.out.println(tabTrouve.length+" "+cmptIterations);
+                        fini = (tabTrouve.length == cmptIterations);
+                       
+                        //ligneCourante++;
+                        if(ligneCourante == image.length)ligneCourante=0;
+                }
+                ligneCourante=(i)%tabTrouve.length;
+                i++;
+        }
+        return rep;
+	}
+	*/
+	
+	public ArrayList<Edge> suiveur(Edge e){
+		ArrayList<Edge> rep = new ArrayList<Edge>();
+		int noeudBase = e.from;
+		int[] noeudSuivants = new int[3];
+		noeudSuivants[0] = noeudBase+1-image.length;
+		noeudSuivants[1] = noeudBase+1;
+		noeudSuivants[2] = noeudBase+1+image.length;
+		
+		for(int i = 0; i < 3; i++){
+			int courant = noeudSuivants[i];
+			if(courant>0 && courant < N-1-image.length){
+				int succ = getSuccesseur(courant);
+				rep.add(getArrete(courant, succ));
+			}
 		}
 		return rep;
 	}
-		
-
+	
+	
 	public void nextFlow(){
 		int min = Integer.MAX_VALUE;
-		for (int i = 0; i < chemin.size()-2; i++) {
+		for (int i = 0; i < chemin.size()-1; i++) {
 			int source = chemin.get(i);
 			int destination = chemin.get(i+1);
 			Edge e = getArrete(source, destination);
 			if(capacity(e)<min) min = capacity(e);
 		}
-		for (int i = 0; i < chemin.size()-2; i++) {
+		for (int i = 0; i < chemin.size()-1; i++) {
 			int source = chemin.get(i);
 			int destination = chemin.get(i+1);
 			Edge e = getArrete(source, destination);
@@ -311,7 +492,7 @@ public class SeamCarving {
 					chemin = tabChemin[i];
 					int noeud = chemin.get(chemin.size()-1);
 					boolean trouve = false;
-					ArrayList<Edge> leNoeud = g.adj2(noeud);
+					ArrayList<Edge> leNoeud = (ArrayList<Edge>)g.adj(noeud);
 					int nbArretes = leNoeud.size();
 					int j = 0;
 					
@@ -334,23 +515,15 @@ public class SeamCarving {
 			}
 			fini = true;
 			for(int b = 0 ; b< tabUtilise.length ; b++){
-					if(tabUtilise[b]){
-						fini = false;
-						b = tabUtilise.length; // on evite de continuer si on a trouvé un chemin 
-					}
-					if(!fini){
-						//si dernier dedans fini
-						if(chemin.contains(N-1))fini=true;
-					}
+				if(tabUtilise[b]){
+					fini = false;
+					b = tabUtilise.length; // on evite de continuer si on a trouvé un chemin 
 				}
-				/*int b = 0;
-				while(!fini && b<tabUtilise.length){
-					System.out.println(tabUtilise[b]);
-					if(tabUtilise[b])fini = true;
-					b++;
-				}*/
-			
-			//
+				if(!fini){
+					//si dernier dedans fini
+					if(chemin.contains(N-1))fini=true;
+				}
+			}
 		}
 	}
 	
@@ -359,7 +532,7 @@ public class SeamCarving {
 		boolean max = false;
 		while(!max){
 			rechercheChemin();
-			if(chemin == null){
+			if(!(chemin.get(chemin.size()-1) == N-1)){
 				max = true;
 			}else{
 				nextFlow();
@@ -438,18 +611,6 @@ public class SeamCarving {
 		supprCoupe(coupe);
 	}
 	
-	//TODO a degager pour le rendu sert juste a faire des tests
-	public static void main(String[] args) {
-		SeamCarving sc = new SeamCarving("test.pgm");
-		sc.toGraph();
-		sc.initFlow();
-		sc.rechercheChemin();
-		System.out.println(sc.chemin);
-System.out.println(sc.toStringGraph());
-		//System.out.println(sc.g);
-		//sc.supprColonne();
-		//sc.writepgm("test2.pgm");
-	}
 
 	public String toStringGraph(){
 		StringBuilder sb = new StringBuilder();

@@ -41,10 +41,6 @@ public class Graph {
 	public final Iterable<Edge> adj(int v) {
 		return adj[v];
 	}
-	
-	public final ArrayList<Edge> adj2(int v) {
-		return adj[v];
-	}
 
 	public final Iterable<Edge> edges() {
 		ArrayList<Edge> list = new ArrayList<Edge>();
