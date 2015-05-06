@@ -170,7 +170,7 @@ public class SeamCarvingRGB {
         boolean[]tab = new boolean[N];
         coupe.add(0);
         tab[0]=true;
-        for(int i = 1;i<image.length;i++){
+        for(int i = 1;i<=image.length;i++){
         	coupe.add(i);
             tab[i]=true;
         }
