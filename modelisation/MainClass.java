@@ -36,7 +36,9 @@ class MainClass {
         private static void seamCarvingRGB(File fichier) {
             // TODO Auto-generated method stub
     		SeamCarvingRGB sc = new SeamCarvingRGB(fichier);
-    		//sc.readppm();
+    		sc.interest1();
+    		sc.interest2();
+    		sc.interest3();
     }
 
 }
