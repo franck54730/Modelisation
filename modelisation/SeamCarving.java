@@ -185,11 +185,6 @@ public class SeamCarving {
 	}
 	
 	public int capacity(int N){
-		
-		//Affichage capacity
-		
-		//System.out.print(interest[(N-1)%interest.length][(N-1)/interest.length]+" ");
-		
 		return interest[(N-1)%interest.length][(N-1)/interest.length];
 	}
 	
@@ -710,6 +705,16 @@ public class SeamCarving {
         ArrayList<Integer> s = getNoeudAccessibles();
         int[] coupe = getCoupeFinale(s);
 		supprCoupe(coupe);
+	}
+	
+	public void supprLigne(){
+		rotationTabDroite();
+		toGraph();
+		flowMax();
+        ArrayList<Integer> s = getNoeudAccessibles();
+        int[] coupe = getCoupeFinale(s);
+		supprCoupe(coupe);
+		rotationTabGauche();
 	}
 	
 
