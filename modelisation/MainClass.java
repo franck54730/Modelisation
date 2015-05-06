@@ -16,7 +16,6 @@ class MainClass {
             JFileChooser.APPROVE_OPTION) {
             fichier = dialogue.getSelectedFile();
             System.out.println(fichier);
-           
         }
         seamCarving(fichier);
        

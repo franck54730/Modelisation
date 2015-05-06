@@ -40,7 +40,7 @@ public class SeamCarving {
 		test.add(4);
 		test.add(7);
 		test.add(5);
-		getCoupeFinale(N,test);
+		//getCoupeFinale(N,test);
 	}
 	
 	public int[][] readpgm() {
@@ -289,6 +289,38 @@ public class SeamCarving {
                 i++;
         }
         return rep;
+	}
+	
+	/**
+	 * renvoi une arraylist qui contient tous les noeuds qui sont accessible de puis la source
+	 */
+	public ArrayList<Integer> getNoeudAccessibles(){
+		ArrayList<Integer> coupe = new ArrayList<Integer>();
+        boolean[]tab = new boolean[N];
+        coupe.add(0);
+        tab[0]=true;
+        for(int i = 1;i<image.length;i++){
+        	coupe.add(i);
+            tab[i]=true;
+        }
+        int cmpt = 1;
+        while(cmpt<coupe.size()){
+                ArrayList<Edge> arretes = (ArrayList<Edge>) g.adj(coupe.get(cmpt));
+                for(Edge e : arretes){
+                        //Edge e = getArrete(j, getSuccesseur(g, j, tabCapMin.length), g);
+                        if(sortante(e, coupe.get(cmpt))){
+                                if(atteignable(e) ){
+                                        if(tab[e.to]==false){
+                                        	coupe.add(e.to);
+                                            tab[e.to]=true;
+                                        }
+                                }
+                        }      
+                }
+                //System.out.println(cmpt);
+                cmpt++;
+        }
+		return coupe;
 	}
 	/*
 	public Edge[] getCoupeProfondeur(){
@@ -540,13 +572,13 @@ public class SeamCarving {
 //			}
 //		}
 //	}
-	
+
 	public void rechercheChemin(){
 		chemin = new ArrayList<Integer>();
 		boolean fini = false;
 		int courant = 0;
 		ArrayList<Integer> listeNoeud = new ArrayList<Integer>();
-		int[] tabParent = new int[N-1];
+		int[] tabParent = new int[N];
 		boolean[] tabMarquer = new boolean[N];
 		tabMarquer[0] = true;
 		for(int i = 0; i < N; i++){
@@ -559,20 +591,20 @@ public class SeamCarving {
 				fini = true;
 			}else{
 				ArrayList<Edge> leNoeud = (ArrayList<Edge>)g.adj(noeudCourant);
-				int j = leNoeud.size()-1;
+				int j = 0;
 				//pour chaque noeud fils
-				while(j>=0){
+				while(j<leNoeud.size()){
 					Edge e = leNoeud.get(j);
 					if(sortante(e,noeudCourant)){
 						if(atteignable(e)){
-							if(!tabMarquer[courant]){
+							if(!tabMarquer[e.to]){
 								tabParent[e.to] = e.from;
 								listeNoeud.add(e.to);
 								tabMarquer[e.to] = true;
 							}
 						}
 					}
-					j--;
+					j++;
 				}
 			}
 			courant++;
@@ -592,10 +624,10 @@ public class SeamCarving {
 	public void getChemin(int[] tabParent){
 		chemin = new ArrayList<Integer>();
 		int noeudCourant = N-1;
-		while(noeudCourant != 0){
+		do{
 			chemin.add(0,noeudCourant);
 			noeudCourant = tabParent[noeudCourant];
-		}
+		}while(chemin.get(0)!=0);
 	}
 	
 	public void flowMax(){
@@ -647,38 +679,36 @@ public class SeamCarving {
 	}
 	
 	/**
-	 * prend un tableau representant l'image (les valeurs lu par readpgm)
-	 * @param image
-	 * @param lesArretes les arretes qui doivent être coupé
-	 * @return
+	 * marche bien
+	 * prend un tableau qui contient les numeros des noeuds qui doivent etre coupé et les retires dans le tableau image
 	 */
-	public void supprCoupe(Edge[] lesArretes){
-		int[][] rep = new int[image.length][image[0].length-1];
-		for(int indexI = 0; indexI < image.length; indexI++){
-			boolean suppr = false;
-			Edge arrete = lesArretes[indexI];
-			int src = arrete.from;
-			int h = (src-1)%image.length;
-			int l = (src-1)/image[0].length;
-			for(int indexJ = 0; indexJ < rep[0].length; indexJ++){
-				if((h == indexI) && (l == indexJ)){
-					suppr = true;
-					rep[indexI][indexJ] = image[indexI][indexJ+1];
-				}else{
-					if(suppr)
-						rep[indexI][indexJ] = image[indexI][indexJ+1];
-					else
-						rep[indexI][indexJ] = image[indexI][indexJ];
-				}
-			}
-		}
-		image = rep;
+	public void supprCoupe(int[] listeA){
+		int[][] newImage = new int[image.length][image[0].length-1];
+        for(int i = 0; i < listeA.length; i++){
+	        boolean supprime = false;
+	        int source = listeA[i];
+	        int height = (source-1)%image.length;
+	        int width = (source-1)/image.length;
+	       // System.out.println(width+"= width"+height+"=height");
+	        for(int j = 0; j < newImage[0].length; j++){
+	                if((height == i) && (width == j)){
+	                        supprime = true;
+	                        //System.out.println(source);
+	                        newImage[i][j] = image[i][j+1];
+	                }else{
+	                        if(supprime) newImage[i][j] = image[i][j+1];
+	                        else newImage[i][j] = image[i][j];
+	                }
+	        }
+        }
+        image = newImage;
 	}
 	
 	public void supprColonne(){
 		toGraph();
 		flowMax();
-		Edge[] coupe = getCoupe();
+        ArrayList<Integer> s = getNoeudAccessibles();
+        int[] coupe = getCoupeFinale(s);
 		supprCoupe(coupe);
 	}
 	
@@ -701,24 +731,24 @@ public class SeamCarving {
 			return sb.toString();
 	}
 	
-	public int[] getCoupeFinale(int N, ArrayList<Integer> tab){
+	public int[] getCoupeFinale(ArrayList<Integer> tab){
 		//Ici aux est de la forme largeur / hauteur
 
-		ArrayList<Integer>[] aux = new ArrayList[N];
+		ArrayList<Integer>[] aux = new ArrayList[image.length];
 		for(int i=0; i<aux.length; i++){
 			aux[i] = new ArrayList<Integer>();
 		}
 		
 		for(int i=1; i<tab.size(); i++){
-			int ligne = tab.get(i)%N;
-			ligne = ligne == 0?N:ligne;
+			int ligne = tab.get(i)%image.length;
+			ligne = ligne == 0?image.length:ligne;
 			ligne--;
 			aux[ligne].add(tab.get(i));
 		}
 		
 		
 		int retour[];
-		retour = new int[N];
+		retour = new int[image.length];
 		
 		for(int i=0; i<aux.length; i++){
 			retour[i]=aux[i].get(aux[i].size()-1);
