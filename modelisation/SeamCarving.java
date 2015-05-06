@@ -480,66 +480,109 @@ public class SeamCarving {
 		return e.from == noeudDestination;
 	}
 	
+//	public void rechercheChemin(){
+//		
+//		/* tableau des differents chemins possibles */
+//		ArrayList<Integer>[] tabChemin = new ArrayList[interest.length];
+//		for (int i = 0; i < tabChemin.length; i++) {
+//			tabChemin[i] = new ArrayList<Integer>();
+//			tabChemin[i].add(0);
+//			tabChemin[i].add(i+1);
+//		}
+//		/* chemin que l'on va emprunter */
+//		chemin = null;
+//		/* tableau de "validité" des differents chemin possibles */
+//		boolean[] tabUtilise = new boolean[tabChemin.length];
+//		/* on met les cases par défaut à true */
+//		for(int a = 0; a < tabUtilise.length ; a++){
+//			tabUtilise[a] = true;
+//		}
+//		boolean fini = false;
+//		
+//		/* tant qu'on n'a tout testé  */
+//		while(!fini){
+//			for(int i=0;i<tabChemin.length;i++){
+//				if(tabUtilise[i]){
+//					chemin = tabChemin[i];
+//					int noeud = chemin.get(chemin.size()-1);
+//					boolean trouve = false;
+//					ArrayList<Edge> leNoeud = (ArrayList<Edge>)g.adj(noeud);
+//					int nbArretes = leNoeud.size();
+//					int j = 0;
+//					
+//					/* tant qu'on n'a pas trouvé de chemin */
+//					while(!trouve && j < nbArretes){
+//						Edge e = leNoeud.get(j);
+//						if(sortante(e,noeud)){
+//							if(atteignable(e)){
+//								int noeudDest = e.to;
+//								if(!parcouru(noeudDest,tabChemin)){
+//									chemin.add(noeudDest);
+//									trouve = true;
+//								}
+//							}
+//						}
+//						j++;
+//					}
+//					if(!trouve)tabUtilise[i] = false;
+//				}
+//			}
+//			fini = true;
+//			for(int b = 0 ; b< tabUtilise.length ; b++){
+//				if(tabUtilise[b]){
+//					fini = false;
+//					b = tabUtilise.length; // on evite de continuer si on a trouvé un chemin 
+//				}
+//				if(!fini){
+//					//si dernier dedans fini
+//					if(chemin.contains(N-1))fini=true;
+//				}
+//			}
+//		}
+//	}
+	
 	public void rechercheChemin(){
-		
-		/* tableau des differents chemins possibles */
-		ArrayList<Integer>[] tabChemin = new ArrayList[interest.length];
-		for (int i = 0; i < tabChemin.length; i++) {
-			tabChemin[i] = new ArrayList<Integer>();
-			tabChemin[i].add(0);
-			tabChemin[i].add(i+1);
-		}
-		/* chemin que l'on va emprunter */
-		chemin = null;
-		/* tableau de "validité" des differents chemin possibles */
-		boolean[] tabUtilise = new boolean[tabChemin.length];
-		/* on met les cases par défaut à true */
-		for(int a = 0; a < tabUtilise.length ; a++){
-			tabUtilise[a] = true;
-		}
+/*
+		fini = faux						
+		N=42						
+		courant = 0						
+		Ajouter 0 a listeNoeud et a tabMarquer						
+		Tant que courant < ListeNoeud.length && !fini						
+			Recuperer NœudCourant					
+			Si NoeudCourant == DernierNoeud 					
+				fini = true;				
+			Sinon					
+				Pour chaque fils accessible de Nœud Courant				
+					Si Fils non marqué			
+						TabParent[fils] = NœudCourant		
+						Ajouter fils a ListeNoeud		
+						Marquer fils
+					Fsi	
+				FP		
+			Fsi			
+			courant++			
+		FTQ				
+*/
 		boolean fini = false;
-		
-		/* tant qu'on n'a tout testé  */
-		while(!fini){
-			for(int i=0;i<tabChemin.length;i++){
-				if(tabUtilise[i]){
-					chemin = tabChemin[i];
-					int noeud = chemin.get(chemin.size()-1);
-					boolean trouve = false;
-					ArrayList<Edge> leNoeud = (ArrayList<Edge>)g.adj(noeud);
-					int nbArretes = leNoeud.size();
-					int j = 0;
-					
-					/* tant qu'on n'a pas trouvé de chemin */
-					while(!trouve && j < nbArretes){
-						Edge e = leNoeud.get(j);
-						if(sortante(e,noeud)){
-							if(atteignable(e)){
-								int noeudDest = e.to;
-								if(!parcouru(noeudDest,tabChemin)){
-									chemin.add(noeudDest);
-									trouve = true;
-								}
-							}
-						}
-						j++;
-					}
-					if(!trouve)tabUtilise[i] = false;
-				}
-			}
-			fini = true;
-			for(int b = 0 ; b< tabUtilise.length ; b++){
-				if(tabUtilise[b]){
-					fini = false;
-					b = tabUtilise.length; // on evite de continuer si on a trouvé un chemin 
-				}
-				if(!fini){
-					//si dernier dedans fini
-					if(chemin.contains(N-1))fini=true;
-				}
-			}
+		int courant = 0;
+		ArrayList<Integer> listeNoeud = new ArrayList<Integer>();
+		int[] tabParent = new int[N-1];
+		boolean[] tabMarquer = new boolean[N];
+		tabMarquer[0] = true;
+		for(int i = 0; i < N; i++){
+				tabMarquer[i] = false;
 		}
+		listeNoeud.add(0);
+		while(!fini && courant < listeNoeud.size()){
+			int noeudCourant = listeNoeud.get(courant);
+			if( noeudCourant == N-1){
+				fini = true;
+			}else{
+				
+			}
+		} 
 	}
+
 	
 	public void flowMax(){
 		initFlow();
@@ -669,6 +712,26 @@ public class SeamCarving {
 		}
 		
 		return retour;
+	}
+	
+	public static int[][] rotationTabDroite(int[][] tableau) {
+		int[][]res = new int[tableau[0].length][tableau.length];
+		for (int i = 0; i < tableau[0].length; i++) {
+			for (int j = 0; j < tableau.length; j++) {
+				res[i][j]=tableau[tableau.length-j-1][i];
+			}
+		}
+		return res;
+	}
+	
+	public static int[][] rotationTabGauche(int[][] tableau) {
+		int[][]res = new int[tableau[0].length][tableau.length];
+		for (int i = 0; i < tableau[0].length; i++) {
+			for (int j = 0; j < tableau.length; j++) {
+				res[i][j]=tableau[tableau.length-j-1][i];
+			}
+		}
+		return res;
 	}
 	
 	public static void main(String[] args)
