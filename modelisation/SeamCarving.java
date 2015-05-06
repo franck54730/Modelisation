@@ -542,27 +542,7 @@ public class SeamCarving {
 //	}
 	
 	public void rechercheChemin(){
-/*
-		fini = faux						
-		N=42						
-		courant = 0						
-		Ajouter 0 a listeNoeud et a tabMarquer						
-		Tant que courant < ListeNoeud.length && !fini						
-			Recuperer NœudCourant					
-			Si NoeudCourant == DernierNoeud 					
-				fini = true;				
-			Sinon					
-				Pour chaque fils accessible de Nœud Courant				
-					Si Fils non marqué			
-						TabParent[fils] = NœudCourant		
-						Ajouter fils a ListeNoeud		
-						Marquer fils
-					Fsi	
-				FP		
-			Fsi			
-			courant++			
-		FTQ				
-*/
+		chemin = new ArrayList<Integer>();
 		boolean fini = false;
 		int courant = 0;
 		ArrayList<Integer> listeNoeud = new ArrayList<Integer>();
@@ -578,11 +558,45 @@ public class SeamCarving {
 			if( noeudCourant == N-1){
 				fini = true;
 			}else{
-				
+				ArrayList<Edge> leNoeud = (ArrayList<Edge>)g.adj(noeudCourant);
+				int j = leNoeud.size()-1;
+				//pour chaque noeud fils
+				while(j>=0){
+					Edge e = leNoeud.get(j);
+					if(sortante(e,noeudCourant)){
+						if(atteignable(e)){
+							if(!tabMarquer[courant]){
+								tabParent[e.to] = e.from;
+								listeNoeud.add(e.to);
+								tabMarquer[e.to] = true;
+							}
+						}
+					}
+					j--;
+				}
 			}
-		} 
+			courant++;
+		}
+		if(fini)
+			getChemin(tabParent);
+		else{
+			chemin = new ArrayList<Integer>();
+			chemin.add(0);
+		}
 	}
 
+	/**
+	 * a n'utilisé que si il existe un chemin sinon boucle a l'infini
+	 * @param tabParent
+	 */
+	public void getChemin(int[] tabParent){
+		chemin = new ArrayList<Integer>();
+		int noeudCourant = N-1;
+		while(noeudCourant != 0){
+			chemin.add(0,noeudCourant);
+			noeudCourant = tabParent[noeudCourant];
+		}
+	}
 	
 	public void flowMax(){
 		initFlow();
@@ -714,21 +728,21 @@ public class SeamCarving {
 		return retour;
 	}
 	
-	public static int[][] rotationTabDroite(int[][] tableau) {
-		int[][]res = new int[tableau[0].length][tableau.length];
-		for (int i = 0; i < tableau[0].length; i++) {
-			for (int j = 0; j < tableau.length; j++) {
-				res[i][j]=tableau[tableau.length-j-1][i];
+	public int[][] rotationTabDroite() {
+		int[][]res = new int[image[0].length][image.length];
+		for (int i = 0; i < image[0].length; i++) {
+			for (int j = 0; j < image.length; j++) {
+				res[i][j]=image[image.length-j-1][i];
 			}
 		}
 		return res;
 	}
 	
-	public static int[][] rotationTabGauche(int[][] tableau) {
-		int[][]res = new int[tableau[0].length][tableau.length];
-		for (int i = 0; i < tableau[0].length; i++) {
-			for (int j = 0; j < tableau.length; j++) {
-				res[i][j]=tableau[tableau.length-j-1][i];
+	public int[][] rotationTabGauche() {
+		int[][]res = new int[image[0].length][image.length];
+		for (int i = 0; i < image[0].length; i++) {
+			for (int j = 0; j < image.length; j++) {
+				res[i][j]=image[image.length-j-1][i];
 			}
 		}
 		return res;
