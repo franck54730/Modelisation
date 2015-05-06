@@ -61,6 +61,10 @@ public class SeamCarvingRGB {
 		}
 	}
 	
+	/** Methode interest1 qui renvoie un tableau d'interet de meme taille que le tableau image
+	 * Calcul des moyenne des couleurs puis addition des differences entre PixelCourant et PixelAdjacents puis moyenne
+	 */
+
 	public int[][] interest1() {
 		int hauteur = image.length;
 		int[][] rep = null;
@@ -103,6 +107,10 @@ public class SeamCarvingRGB {
 		
 		return rep;
 	}
+	
+	/** Methode interest2 qui renvoie un tableau d'interet de meme taille que le tableau image
+	 * Calcul des moyenne des couleurs puis addition des differences entre PixelCourant et PixelAdjacents
+	 */
 	
 	public int[][] interest2() {
 		int hauteur = image.length;
@@ -155,6 +163,11 @@ public class SeamCarvingRGB {
         return (a+b+c)/3;
 	}
 	
+	/**
+	 * Methode interest3 qui renvoie un tableau d'interet de meme taille que le tableau image
+	 * Moyenne des moyennes des RGB Adjacents avec la moyenne RGB courante 
+	 */
+	
 	public int[][] interest3(){
         int[][] res = new int[image.length][image[0].length];
         for(int i=0;i<image.length;i++){
@@ -194,6 +207,11 @@ public class SeamCarvingRGB {
 	public int moyennePixel(Pixel p){
 		return (p.getRed()+p.getGreen()+p.getBlue())/3;
 	}
+	
+	/**
+	 * Methode interest4 qui renvoie un tableau d'interet de meme taille que le tableau image
+	 * Pas encore comprise mais marche
+	 */
 	
 	public int[][] interest4() {
 		int hauteur = image.length;
