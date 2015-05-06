@@ -30,7 +30,7 @@ class MainClass {
         			sc.supprColonne();
         		}
         		System.out.println("fini");
-        		sc.writepgm("finalPPM.ppm");
+        		sc.writepgm("finalPGM.pgm");
         }
 
         private static void seamCarvingRGB(File fichier) {
@@ -39,6 +39,7 @@ class MainClass {
     		sc.interest1();
     		sc.interest2();
     		sc.interest3();
+    		sc.interest4();
     }
 
 }
