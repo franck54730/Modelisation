@@ -1,10 +1,14 @@
 package modelisation;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -66,6 +70,51 @@ public class SeamCarvingRGB {
 		}
 	}
 	
+	public void writepgm(String test){
+//		   try {
+//			   FileWriter fw = new FileWriter(test);
+//			   PrintWriter output = new PrintWriter(new BufferedWriter(fw));
+//			   output.println("P2");
+//			   output.print(image.length+" ");
+//			   output.print(image[0].length+"");
+//			   output.println("255");
+//			   for(int i=0; i<image.length; i++){
+//				   for(int j=0; j<image[i].length; j++){
+//					    output.print(image[i][j]+" ");
+//				   }
+//				   output.println("\n");
+//			   }
+//			   output.flush();
+//			   output.close();
+//			   System.out.println("fichier pgm cree");
+//		   }
+//		   catch(IOException ioe){
+//				System.out.print(System.err);
+//				ioe.printStackTrace();
+//			}
+		
+		int width = image[0].length;
+	    int height = image.length;
+	    try {
+	            PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(test)));
+	            pw.println("P3");
+	            pw.print(width);
+	            pw.print(" ");
+	            pw.println(height);
+	            pw.println("255");
+	            for(int i = 0; i< height; i++){
+	                    for(int j = 0; j<width; j++){
+	                            pw.print(image[i][j].getRed()+" "+image[i][j].getGreen()+" "+image[i][j].getBlue());
+	                            pw.print("    ");
+	                    }
+	                    pw.println("\n");
+	            }
+	            pw.close();
+	    } catch (IOException e) {
+	           
+	            e.printStackTrace();
+	    }
+	}
 
 	public void toGraph(){
 		

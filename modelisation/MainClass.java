@@ -7,7 +7,7 @@ import javax.swing.JFileChooser;
  
 class MainClass {
 
-	private static final int NB_COLONNE_SUPPR = 50;
+	private static final int NB_COLONNE_SUPPR = 2;
     public static void main(String[] arg) throws IOException {
         JFileChooser dialogue = new JFileChooser(new File("."));
         File fichier = null;
@@ -35,10 +35,17 @@ class MainClass {
         private static void seamCarvingRGB(File fichier) {
             // TODO Auto-generated method stub
     		SeamCarvingRGB sc = new SeamCarvingRGB(fichier);
-    		sc.interest1();
-    		sc.interest2();
-    		sc.interest3();
-    		sc.interest4();
+    		//sc.interest1();
+    		//sc.interest2();
+    		//sc.interest3();
+    		//sc.interest4();
+    		
+    		for(int i = 0; i < NB_COLONNE_SUPPR; i++){
+    			System.out.print(".");
+    			sc.supprColonne();
+    		}
+    		System.out.println("fini");
+    		sc.writepgm("finalPPM.ppm");
     }
 
 }
