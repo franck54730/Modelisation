@@ -12,6 +12,18 @@ public class Pixel {
 		this.blue=b;
 	}
 	
+	public int getRed(){
+		return red;
+	}
+	
+	public int getGreen(){
+		return green;
+	}
+	
+	public int getBlue(){
+		return blue;
+	}
+	
 	public String toString(){
 		   return "["+red+" "+green+" "+blue+"]";
 	   }
