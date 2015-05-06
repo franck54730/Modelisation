@@ -18,10 +18,10 @@ class MainClass {
             System.out.println(fichier);
            
         }
-        seamCarving(fichier);
-       
+        //seamCarving(fichier);
+        seamCarvingRGB(fichier);
     }
- 
+
         private static void seamCarving(File fichier) {
                 // TODO Auto-generated method stub
         		SeamCarving sc = new SeamCarving(fichier);
@@ -30,6 +30,13 @@ class MainClass {
         			sc.supprColonne();
         		}
         		System.out.println("fini");
-        		sc.writepgm("final.pgm");
+        		sc.writepgm("finalPPM.ppm");
         }
+
+        private static void seamCarvingRGB(File fichier) {
+            // TODO Auto-generated method stub
+    		SeamCarvingRGB sc = new SeamCarvingRGB(fichier);
+    		//sc.readppm();
+    }
+
 }
