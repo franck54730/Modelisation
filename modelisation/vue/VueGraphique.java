@@ -23,12 +23,10 @@ public class VueGraphique extends JPanel implements Observer{
 		this.add(vi);
 	}
 	
-	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
 		Runnable code = new Runnable() {
 
-			@Override
 			public void run() {
 				// TODO Auto-generated method stub
 				//vi.
