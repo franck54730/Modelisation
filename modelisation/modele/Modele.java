@@ -213,4 +213,8 @@ public class Modele extends Observable implements Runnable{
 		return interestModif;
 	}
 	
+	public Pixel[][] getImage(){
+		return choixSeamCarving == typeChoix.PGM ? seamCarving.getImage() : seamCarvingRGB.getImage();
+	}
+	
 }

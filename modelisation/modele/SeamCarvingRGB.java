@@ -566,4 +566,9 @@ public class SeamCarvingRGB {
 			}
 			
 		}
+
+		public Pixel[][] getImage() {
+			// TODO Auto-generated method stub
+			return image;
+		}
 }

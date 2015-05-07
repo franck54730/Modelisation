@@ -2,16 +2,13 @@ package modelisation.modele;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 
 public class SeamCarving {
@@ -19,10 +16,20 @@ public class SeamCarving {
 	private int[][] image;
 	private Modele model;
 
-	//TODO a degager pour le rendu sert juste a faire des tests
 	public SeamCarving(Modele m){
 		model = m;
 		//g.writeFile("src/test.dot");
+	}
+	
+	public Pixel[][] getImage(){
+		Pixel[][] rep = new Pixel[image.length][image[0].length];
+		for(int i=0; i<image.length; i++){
+			for(int j=0; j<image[0].length; j++){
+				int valeur = image[i][j];
+				rep[i][j] = new Pixel(valeur,valeur,valeur);
+			}
+		}
+		return rep;
 	}
 	
 	public void lireFichier(){
