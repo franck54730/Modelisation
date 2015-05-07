@@ -1,4 +1,4 @@
-package modelisation;
+package modelisation.modele;
 
 import java.util.ArrayList;
 import java.io.*;

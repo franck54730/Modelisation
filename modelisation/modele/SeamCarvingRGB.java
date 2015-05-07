@@ -1,4 +1,4 @@
-package modelisation;
+package modelisation.modele;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -21,7 +21,7 @@ public class SeamCarvingRGB {
 	private File fileName;
 	private Pixel[][] image;
 	
-	SeamCarvingRGB(File fichier){
+	public SeamCarvingRGB(File fichier){
 		fileName = fichier;
 		image = readppm();
 	}

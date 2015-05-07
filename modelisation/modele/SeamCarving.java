@@ -1,4 +1,4 @@
-package modelisation;
+package modelisation.modele;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -479,7 +479,7 @@ public class SeamCarving {
 		return rep;
 	}
 	
-	public void dontCoupe(int l1, int h1, int l2, int h2){
+	/*public void dontCoupe(int l1, int h1, int l2, int h2){
 		for(int i = (h1>h2?h2:h1); i <= (h1>h2?h1:h2); i++){
 			for(int j = (l1>l2?l2:l1); j <= (l1>l2?l1:l2); j++){
 				int noeud = j*image.length+i+1;
@@ -496,7 +496,7 @@ public class SeamCarving {
 				}
 			}
 		}
-	}
+	}*/
 	
 	
 	public void nextFlow(){

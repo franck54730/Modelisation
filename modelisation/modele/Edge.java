@@ -1,4 +1,4 @@
-package modelisation;
+package modelisation.modele;
 
 class Edge
 {
