@@ -25,7 +25,7 @@ public class VueImage extends JPanel implements Observer{
         this.setPreferredSize(new Dimension(500, 500));
     }
 
-	@Override
+	
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
 		image = m.getImage();

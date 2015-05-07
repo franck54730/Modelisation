@@ -45,7 +45,7 @@ public class Modele extends Observable implements Runnable{
 	/**
 	 * Nombre de fois que le traitement doit etre effectué (nombre de pixel à supprimer)
 	 */
-	private static final int NB_COLONNE_SUPPR = 50;
+	private static final int NB_COLONNE_SUPPR = 5;
 	
 	/**
 	 * Choix seamCarving à utiliser
@@ -131,10 +131,10 @@ public class Modele extends Observable implements Runnable{
                 	setChoixSeamCarving(typeChoix.PPM);
                 	seamCarvingRGB.lireFichier();
                 	//seamCarvingRGB(fichier);
-                }
-                else {
+                }else {
                 	System.out.println("Choisissez un fichier ppm ou pgm.");
                 }
+                miseAJour();
             }
             else{
             	System.out.println("Aucun fichier selectionné.");
