@@ -11,6 +11,7 @@ public class Modele extends Observable implements Runnable{
 	
 	private int N;
 	private int[][] interest;
+	private int[][] interestModif;
 	private Graph graphe;
 	private ArrayList<Integer> chemin;
 	private SeamCarving seamCarving;
@@ -165,6 +166,7 @@ public class Modele extends Observable implements Runnable{
      */
 	public void run() {
 		// TODO Auto-generated method stub
+		seamCarving.firstCoupe(3, 0, 12, 6);
 		switch(choixSeamCarving){
 			case PGM : seamCarving();
 			break;
@@ -207,6 +209,15 @@ public class Modele extends Observable implements Runnable{
 
 	public ArrayList<Integer> getChemin() {
 		return chemin;
+	}
+
+	public void setInterestModif(int[][] is) {
+		interestModif = is;
+	}
+
+	public int[][] getInterestModif() {
+		// TODO Stub de la méthode généré automatiquement
+		return interestModif;
 	}
 	
 }
