@@ -9,7 +9,7 @@ import modelisation.modele.*;
 class MainClass extends JFrame{
 	
 	public MainClass(){
-		super("Projet Modelisation - Traitements d'images");
+		super("Projet Modelisation - Logiciel de traitement d'image");
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    
 	    Modele m = new Modele();
@@ -20,6 +20,7 @@ class MainClass extends JFrame{
 	    
 	    this.add(vg, BorderLayout.CENTER);
         this.add(vb, BorderLayout.SOUTH);
+        this.setJMenuBar(new VueMenu(m));
 	    
 	    pack() ;
         setVisible(true);

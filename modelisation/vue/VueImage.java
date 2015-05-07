@@ -13,7 +13,8 @@ public class VueImage extends JPanel{
 	public VueImage(Modele mod) {
         super();
         this.m = mod;
-        this.setPreferredSize(new Dimension(500, 500)) ;
+        this.setPreferredSize(new Dimension(500, 500));
+        
         // Dessiner image
         repaint();
     }

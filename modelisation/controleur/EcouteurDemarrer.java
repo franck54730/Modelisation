@@ -7,14 +7,19 @@ import modelisation.modele.Modele;
 
 public class EcouteurDemarrer implements ActionListener {
 
-	public EcouteurDemarrer(Modele m) {
+	/** Attribut m (Modele). */
+	protected Modele m;
+	
+	public EcouteurDemarrer(Modele mod) {
 		// TODO Auto-generated constructor stub
+		this.m=mod;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-
+		Thread t = new Thread((Runnable)m, "Traitement-image");
+		t.start() ;
 	}
 
 }

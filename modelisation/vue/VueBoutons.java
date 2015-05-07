@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -32,16 +33,19 @@ public class VueBoutons extends JPanel implements Observer{
 		this.m=mod;
 		this.setBackground(Color.LIGHT_GRAY);
 		
-		this.parcourir = new JButton("Parcourir");
+		this.parcourir = new JButton();
 		this.add(parcourir);
+		parcourir.setIcon(new ImageIcon("src/parcourir.png"));
 		parcourir.addActionListener(new EcouteurParcourir(m));
 		
-		this.demarrer = new JButton("Demarrer");
+		this.demarrer = new JButton();
 		this.add(demarrer);
+		demarrer.setIcon(new ImageIcon("src/demarrer.png"));
 		demarrer.addActionListener(new EcouteurDemarrer(m));
 		
-		this.quitter = new JButton("Quitter");
+		this.quitter = new JButton();
 		this.add(quitter);
+		quitter.setIcon(new ImageIcon("src/quitter.png"));
 		quitter.addActionListener(new EcouteurQuitter(m));
 	}
 
