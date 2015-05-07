@@ -51,7 +51,7 @@ public class SeamCarvingRGB {
 				im[count / width][count % width] = new Pixel(r,g,b);
 				count++;
 			}
-			
+			/*
 			// Affichage de l'image
 			System.out.println("Image :\n");
 			for(int i=0; i<im.length; i++){
@@ -60,7 +60,7 @@ public class SeamCarvingRGB {
 				}
 				System.out.println();
 			}
-			
+			*/
 			return im;
 		}
 
@@ -431,7 +431,7 @@ public class SeamCarvingRGB {
                 }
         }
         
-        
+        /*
         // Afichage du tableau d'interet
      	System.out.println("\n Tableau d'interet 3 :\n");
      	for(int i=0; i<res.length; i++){
@@ -440,6 +440,7 @@ public class SeamCarvingRGB {
      		}
      		System.out.println();
      	}
+     	*/
         return res;
 	}
 	

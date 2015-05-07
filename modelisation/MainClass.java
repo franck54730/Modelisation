@@ -7,7 +7,7 @@ import javax.swing.JFileChooser;
  
 class MainClass {
 
-	private static final int NB_COLONNE_SUPPR = 2;
+	private static final int NB_COLONNE_SUPPR = 50;
     public static void main(String[] arg) throws IOException {
         JFileChooser dialogue = new JFileChooser(new File("."));
         File fichier = null;
@@ -15,7 +15,7 @@ class MainClass {
         if (dialogue.showOpenDialog(null)==
             JFileChooser.APPROVE_OPTION) {
             fichier = dialogue.getSelectedFile();
-            System.out.println(fichier);
+            //System.out.println(fichier);
         }
         //seamCarving(fichier);
         seamCarvingRGB(fichier);
@@ -44,7 +44,7 @@ class MainClass {
     		
     		int boucle = NB_COLONNE_SUPPR;
     		for(int i = 0; i < NB_COLONNE_SUPPR; i++){
-    			System.out.print(boucle+" ");
+    			//System.out.print(boucle+" ");
     			sc.supprColonne();
     			boucle--;
     		}

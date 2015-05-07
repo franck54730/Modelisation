@@ -4,7 +4,7 @@ class Edge
 {
    final int from;
    final int to;
-   final int capacity;
+   int capacity;
    int used;
    Edge(int x, int y, int capacity, int used)
 	 {

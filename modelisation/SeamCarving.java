@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -476,6 +477,25 @@ public class SeamCarving {
 			}
 		}
 		return rep;
+	}
+	
+	public void dontCoupe(int l1, int h1, int l2, int h2){
+		for(int i = (h1>h2?h2:h1); i <= (h1>h2?h1:h2); i++){
+			for(int j = (l1>l2?l2:l1); j <= (l1>l2?l1:l2); j++){
+				int noeud = j*image.length+i+1;
+				ArrayList<Edge> leNoeud = (ArrayList<Edge>)g.adj(noeud);
+				boolean trouv = false;
+				int k = 0;
+				while(k < leNoeud.size() && !trouv){
+					Edge arrete = leNoeud.get(k);
+					if(sortante(arrete, noeud)){
+						if(arrete.to>noeud){//si c'est l'arrete qui va vers l'avant
+							arrete.capacity = Integer.MAX_VALUE;
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	
