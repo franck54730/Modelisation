@@ -24,9 +24,11 @@ class MainClass {
         private static void seamCarving(File fichier) {
                 // TODO Auto-generated method stub
         		SeamCarving sc = new SeamCarving(fichier);
+        		int boucle = NB_COLONNE_SUPPR;
         		for(int i = 0; i < NB_COLONNE_SUPPR; i++){
-        			System.out.print(".");
+        			System.out.print(boucle+" ");
         			sc.supprColonne();
+        			boucle--;
         		}
         		System.out.println("fini");
         		sc.writepgm("finalPGM.pgm");
@@ -40,9 +42,11 @@ class MainClass {
     		//sc.interest3();
     		//sc.interest4();
     		
+    		int boucle = NB_COLONNE_SUPPR;
     		for(int i = 0; i < NB_COLONNE_SUPPR; i++){
-    			System.out.print(".");
+    			System.out.print(boucle+" ");
     			sc.supprColonne();
+    			boucle--;
     		}
     		System.out.println("fini");
     		sc.writepgm("finalPPM.ppm");
