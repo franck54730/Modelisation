@@ -45,11 +45,7 @@ public class Modele extends Observable implements Runnable{
 	/**
 	 * Nombre de fois que le traitement doit etre effectué (nombre de pixel à supprimer)
 	 */
-<<<<<<< HEAD
-	private static final int NB_COLONNE_SUPPR = 5;
-=======
 	private static final int NB_COLONNE_SUPPR = 15;
->>>>>>> f0f414f0128c0da6de1c075048f11edc08e0eacf
 	
 	/**
 	 * Choix seamCarving à utiliser
