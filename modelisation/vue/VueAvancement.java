@@ -29,7 +29,13 @@ public class VueAvancement extends JPanel implements Observer{
 	
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
-		jTexte.setText("Traitement de l'image : "+m.getAvancement()+"%");
+		if(m.getAvancement()!=100){
+			jTexte.setText("Traitement de l'image : "+m.getAvancement()+"%");
+		}
+		else{
+			jTexte.setText("Traitement de l'image effectué");
+		}
+		
 	}
 
 }
