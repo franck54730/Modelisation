@@ -15,7 +15,6 @@ public class EcouteurQuitter implements ActionListener {
 		this.m=mod;
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		System.exit(0);

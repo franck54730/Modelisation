@@ -15,7 +15,6 @@ public class EcouteurDemarrer implements ActionListener {
 		this.m=mod;
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		Thread t = new Thread((Runnable)m, "Traitement-image");

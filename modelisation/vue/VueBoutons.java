@@ -37,6 +37,7 @@ public class VueBoutons extends JPanel implements Observer{
 		this.add(parcourir);
 		parcourir.setIcon(new ImageIcon("src/parcourir.png"));
 		parcourir.addActionListener(new EcouteurParcourir(m));
+
 		
 		this.demarrer = new JButton();
 		this.add(demarrer);
@@ -49,7 +50,6 @@ public class VueBoutons extends JPanel implements Observer{
 		quitter.addActionListener(new EcouteurQuitter(m));
 	}
 
-	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
 		// Si changement de bouton : m.notifyObservers();

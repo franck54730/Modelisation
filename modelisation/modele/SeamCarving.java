@@ -706,6 +706,7 @@ public class SeamCarving {
 	 */
 	public void supprCoupe(int[] listeA){
 		int[][] newImage = new int[image.length][image[0].length-1];
+		int[][] interetModif = new int[image.length][image[0].length-1];
         for(int i = 0; i < listeA.length; i++){
 	        boolean supprime = false;
 	        int source = listeA[i];
@@ -717,12 +718,19 @@ public class SeamCarving {
 	                        supprime = true;
 	                        //System.out.println(source);
 	                        newImage[i][j] = image[i][j+1];
+	                        interetModif[i][j] = model.getInterestModif()[i][j+1];
 	                }else{
-	                        if(supprime) newImage[i][j] = image[i][j+1];
-	                        else newImage[i][j] = image[i][j];
+                        if(supprime){
+                        	newImage[i][j] = image[i][j+1];
+                        	interetModif[i][j] = model.getInterestModif()[i][j+1];
+                        }else{
+                        	newImage[i][j] = image[i][j];
+                        	interetModif[i][j] = model.getInterestModif()[i][j];
+                        }
 	                }
 	        }
         }
+        model.setInterestModif(interetModif);
         image = newImage;
 	}
 	
@@ -792,21 +800,27 @@ public class SeamCarving {
 	
 	public int[][] rotationTabDroite() {
 		int[][]res = new int[image[0].length][image.length];
+		int[][] interetModif = new int[image.length][image[0].length-1];
 		for (int i = 0; i < image[0].length; i++) {
 			for (int j = 0; j < image.length; j++) {
 				res[i][j]=image[image.length-j-1][i];
+            	interetModif[i][j] = model.getInterestModif()[image.length-j-1][i];
 			}
 		}
+        model.setInterestModif(interetModif);
 		return res;
 	}
 	
 	public int[][] rotationTabGauche() {
 		int[][]res = new int[image[0].length][image.length];
+		int[][] interetModif = new int[image.length][image[0].length-1];
 		for (int i = 0; i < image[0].length; i++) {
 			for (int j = 0; j < image.length; j++) {
 				res[i][j]=image[image.length-j-1][i];
+            	interetModif[i][j] = model.getInterestModif()[image.length-j-1][i];
 			}
 		}
+        model.setInterestModif(interetModif);
 		return res;
 	}
 }
