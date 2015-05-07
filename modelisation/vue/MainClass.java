@@ -18,6 +18,9 @@ class MainClass extends JFrame{
 	    
 	    VueBoutons vb = new VueBoutons(m);
 	    
+	    VueAvancement va = new VueAvancement(m);
+	    
+	    this.add(va, BorderLayout.NORTH);
 	    this.add(vg, BorderLayout.CENTER);
         this.add(vb, BorderLayout.SOUTH);
         this.setJMenuBar(new VueMenu(m));

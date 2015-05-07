@@ -1,7 +1,5 @@
 package modelisation.vue;
 
-import java.util.Observable;
-
 import javax.swing.JPanel;
 
 import modelisation.modele.Modele;

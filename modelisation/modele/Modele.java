@@ -16,6 +16,7 @@ public class Modele extends Observable implements Runnable{
 	private ArrayList<Integer> chemin;
 	private SeamCarving seamCarving;
 	private SeamCarvingRGB seamCarvingRGB;
+	private int avancement = 0;
 	
 	/**
 	 * Nombre de fois que le traitement doit etre effectué (nombre de pixel à supprimer)
@@ -125,12 +126,13 @@ public class Modele extends Observable implements Runnable{
     	// TODO Auto-generated method stub
         int boucle = 0;
         for(int i = 0; i < NB_COLONNE_SUPPR; i++){
-        	System.out.println((boucle*100)/NB_COLONNE_SUPPR+"%");
+        	avancement = (boucle*100)/NB_COLONNE_SUPPR;
         	seamCarving.supprColonne();
         	boucle++;
         	miseAJour();
         }
-        System.out.println("100% \nTraitement effectué.");
+        avancement = 100;
+        miseAJour();
         seamCarving.writepgm("finalPGM.pgm");
     }
 
@@ -147,12 +149,13 @@ public class Modele extends Observable implements Runnable{
     		
     	int boucle = 0;
     	for(int i = 0; i < NB_COLONNE_SUPPR; i++){
-    		System.out.println((boucle*100)/NB_COLONNE_SUPPR+"%");
+    		avancement = (boucle*100)/NB_COLONNE_SUPPR;
     		seamCarvingRGB.supprColonne();
     		boucle++;
     		miseAJour();
     	}
-    	System.out.println("100% \nTraitement effectué.");
+    	avancement = 100;
+    	miseAJour();
     	seamCarvingRGB.writepgm("finalPPM.ppm");
     }
 
@@ -222,6 +225,14 @@ public class Modele extends Observable implements Runnable{
 	public void miseAJour(){
 		notifyObservers();
 		setChanged();
+	}
+	
+	public void setAvancement(int a){
+		avancement = a;
+	}
+	
+	public int getAvancement(){
+		return avancement;
 	}
 	
 }
