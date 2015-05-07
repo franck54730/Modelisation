@@ -17,6 +17,30 @@ public class Modele extends Observable implements Runnable{
 	private SeamCarving seamCarving;
 	private SeamCarvingRGB seamCarvingRGB;
 	
+	public enum TypeCoupe {LIGNE,COLONNE};
+	private TypeCoupe typeCoupe = TypeCoupe.COLONNE;
+	
+	public enum TypeSelection {FIRST,DONT,NONE};
+	private TypeSelection typeSelection = TypeSelection.NONE;
+	
+	public TypeCoupe getTypeCoupe(){
+		return typeCoupe;
+	}
+	
+	public void setTypeCoupe(TypeCoupe t){
+		typeCoupe = t;
+		miseAJour();
+	}
+	
+	public TypeSelection getTypeSelection(){
+		return typeSelection;
+	}
+	
+	public void setTypeSelection(TypeSelection t){
+		typeSelection = t;
+		miseAJour();
+	}
+	
 	/**
 	 * Nombre de fois que le traitement doit etre effectué (nombre de pixel à supprimer)
 	 */
@@ -220,8 +244,8 @@ public class Modele extends Observable implements Runnable{
 	}
 	
 	public void miseAJour(){
-		notifyObservers();
 		setChanged();
+		notifyObservers();
 	}
 	
 }
