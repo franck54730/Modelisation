@@ -159,7 +159,7 @@ public class Modele extends Observable implements Runnable{
      */
 	public void run() {
 		// TODO Auto-generated method stub
-		seamCarving.firstCoupe(3, 0, 12, 6);
+		//seamCarving.firstCoupe(18, 0, 22, 4);
 		switch(choixSeamCarving){
 			case PGM : seamCarving();
 			break;
