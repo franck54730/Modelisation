@@ -41,6 +41,11 @@ public class SeamCarving {
 			Scanner s = new Scanner(line);
 			int width = s.nextInt();
 			int height = s.nextInt();
+			int[][] interestModif = new int[height][width];
+			for(int i = 0; i < height; i++)
+				for(int j = 0; j < width; j++)
+					interestModif[i][j] = -1;
+			model.setInterestModif(interestModif);
 			line = d.readLine();
 			s = new Scanner(line);
 			int maxVal = s.nextInt();
@@ -68,16 +73,21 @@ public class SeamCarving {
 			rep = new int[hauteur][largeur];
 			for (int x = 0; x < largeur; x++) {
 				for (int y = 0; y < hauteur; y++) {
-					int valeurThis = image[y][x];
-					int valeurAvg = 0;
-					if(x == 0){//pixel de gauche
-						valeurAvg = image[y][x+1];
-					}else if(x == largeur-1){//pixel de droite
-						valeurAvg = image[y][x-1];
-					}else{//autre pixel
-						valeurAvg = (image[y][x+1]+image[y][x-1])/2;
-					}
-					rep[y][x] =  Math.abs(Math.abs(valeurThis)-Math.abs(valeurAvg));
+
+                	if(model.getInterestModif()[y][x] == -1){
+						int valeurThis = image[y][x];
+						int valeurAvg = 0;
+						if(x == 0){//pixel de gauche
+							valeurAvg = image[y][x+1];
+						}else if(x == largeur-1){//pixel de droite
+							valeurAvg = image[y][x-1];
+						}else{//autre pixel
+							valeurAvg = (image[y][x+1]+image[y][x-1])/2;
+						}
+						rep[y][x] =  Math.abs(Math.abs(valeurThis)-Math.abs(valeurAvg));
+                	}else{
+                		rep[y][x] = model.getInterestModif()[y][x];
+                	}
 				}
 			}
 		}
@@ -468,24 +478,25 @@ public class SeamCarving {
 		return rep;
 	}
 	
-	/*public void dontCoupe(int l1, int h1, int l2, int h2){
+	public void dontCoupe(int l1, int h1, int l2, int h2){
+		Graph g = model.getGraphe();
+		int[][] interestModif = model.getInterestModif();
 		for(int i = (h1>h2?h2:h1); i <= (h1>h2?h1:h2); i++){
 			for(int j = (l1>l2?l2:l1); j <= (l1>l2?l1:l2); j++){
-				int noeud = j*image.length+i+1;
-				ArrayList<Edge> leNoeud = (ArrayList<Edge>)g.adj(noeud);
-				boolean trouv = false;
-				int k = 0;
-				while(k < leNoeud.size() && !trouv){
-					Edge arrete = leNoeud.get(k);
-					if(sortante(arrete, noeud)){
-						if(arrete.to>noeud){//si c'est l'arrete qui va vers l'avant
-							arrete.capacity = Integer.MAX_VALUE;
-						}
-					}
-				}
+				interestModif[i][j] = Integer.MAX_VALUE;
 			}
 		}
-	}*/
+	}
+	
+	public void firstCoupe(int l1, int h1, int l2, int h2){
+		Graph g = model.getGraphe();
+		int[][] interestModif = model.getInterestModif();
+		for(int i = (h1>h2?h2:h1); i <= (h1>h2?h1:h2); i++){
+			for(int j = (l1>l2?l2:l1); j <= (l1>l2?l1:l2); j++){
+				interestModif[i][j] = 0;
+			}
+		}
+	}
 	
 	
 	public void nextFlow(){

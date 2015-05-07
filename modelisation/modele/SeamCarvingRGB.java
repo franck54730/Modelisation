@@ -38,6 +38,11 @@ public class SeamCarvingRGB {
 			Scanner s = new Scanner(line);
 			int width = s.nextInt();
 			int height = s.nextInt();
+			int[][] interestModif = new int[height][width];
+			for(int i = 0; i < height; i++)
+				for(int j = 0; j < width; j++)
+					interestModif[i][j] = -1;
+			model.setInterestModif(interestModif);
 			line = d.readLine();
 			s = new Scanner(line);
 			int maxVal = s.nextInt();
@@ -67,6 +72,28 @@ public class SeamCarvingRGB {
 		catch (Throwable t) {
 			t.printStackTrace(System.err);
 			return null;
+		}
+	}
+	
+
+	
+	public void dontCoupe(int l1, int h1, int l2, int h2){
+		Graph g = model.getGraphe();
+		int[][] interestModif = model.getInterestModif();
+		for(int i = (h1>h2?h2:h1); i <= (h1>h2?h1:h2); i++){
+			for(int j = (l1>l2?l2:l1); j <= (l1>l2?l1:l2); j++){
+				interestModif[i][j] = Integer.MAX_VALUE;
+			}
+		}
+	}
+	
+	public void firstCoupe(int l1, int h1, int l2, int h2){
+		Graph g = model.getGraphe();
+		int[][] interestModif = model.getInterestModif();
+		for(int i = (h1>h2?h2:h1); i <= (h1>h2?h1:h2); i++){
+			for(int j = (l1>l2?l2:l1); j <= (l1>l2?l1:l2); j++){
+				interestModif[i][j] = 0;
+			}
 		}
 	}
 	
@@ -120,7 +147,7 @@ public class SeamCarvingRGB {
 		
 		model.setN(image.length * image[0].length+2);
 		model.setGraph(new Graph(model.getN()));
-		model.setInterest(interest3());
+		model.setInterest(interest());
 		Graph g = model.getGraphe();
 		//System.out.println("Capacites :");
 		
@@ -300,101 +327,6 @@ public class SeamCarvingRGB {
 		return retour;
 	}
 	
-	
-	/** Methode interest1 qui renvoie un tableau d'interet de meme taille que le tableau image
-	 * Calcul des moyenne des couleurs puis addition des differences entre PixelCourant et PixelAdjacents puis moyenne
-	 */
-
-	public int[][] interest1() {
-		int hauteur = image.length;
-		int[][] rep = null;
-		if (hauteur > 0) {
-			int largeur = image[0].length;
-			rep = new int[hauteur][largeur];
-			for (int x = 0; x < largeur; x++) {
-				for (int y = 0; y < hauteur; y++) {
-					Pixel PixelThis = image[y][x];
-					Pixel PixelAvg = new Pixel(0,0,0);
-					
-					if(x == 0){//pixel de gauche
-						PixelAvg = image[y][x+1];
-					}
-					else if(x == largeur-1){//pixel de droite
-						PixelAvg = image[y][x-1];
-					}
-					else{//autre pixel
-						int rAvg = image[y][x+1].getRed() + image[y][x-1].getRed()/2;
-						int gAvg = image[y][x+1].getGreen() + image[y][x-1].getGreen()/2;
-						int bAvg = image[y][x+1].getBlue() + image[y][x-1].getBlue()/2;
-						PixelAvg = new Pixel(rAvg,gAvg,bAvg);
-					}
-					
-					rep[y][x] = (Math.abs(Math.abs(PixelThis.getRed())-Math.abs(PixelAvg.getRed()))+
-								 Math.abs(Math.abs(PixelThis.getGreen())-Math.abs(PixelAvg.getGreen()))+
-								 Math.abs(Math.abs(PixelThis.getBlue())-Math.abs(PixelAvg.getBlue())))/3;
-				}
-			}
-		}
-		
-		// Afichage du tableau d'interet
-		System.out.println("\n Tableau d'interet 1 :\n");
-		for(int i=0; i<rep.length; i++){
-			for(int j=0; j<rep[i].length; j++){
-				System.out.print(rep[i][j]+" ");
-			}
-			System.out.println();
-		}
-		
-		return rep;
-	}
-	
-	/** Methode interest2 qui renvoie un tableau d'interet de meme taille que le tableau image
-	 * Calcul des moyenne des couleurs puis addition des differences entre PixelCourant et PixelAdjacents
-	 */
-	
-	public int[][] interest2() {
-		int hauteur = image.length;
-		int[][] rep = null;
-		if (hauteur > 0) {
-			int largeur = image[0].length;
-			rep = new int[hauteur][largeur];
-			for (int x = 0; x < largeur; x++) {
-				for (int y = 0; y < hauteur; y++) {
-					Pixel PixelThis = image[y][x];
-					Pixel PixelAvg = new Pixel(0,0,0);
-					Pixel PixelInteret = new Pixel(0,0,0);
-					
-					if(x == 0){//pixel de gauche
-						PixelAvg = image[y][x+1];
-					}
-					else if(x == largeur-1){//pixel de droite
-						PixelAvg = image[y][x-1];
-					}
-					else{//autre pixel
-						int rAvg = image[y][x+1].getRed() + image[y][x-1].getRed()/2;
-						int gAvg = image[y][x+1].getGreen() + image[y][x-1].getGreen()/2;
-						int bAvg = image[y][x+1].getBlue() + image[y][x-1].getBlue()/2;
-						PixelAvg = new Pixel(rAvg,gAvg,bAvg);
-					}
-					 
-					PixelInteret = new Pixel(Math.abs(PixelThis.getRed()-PixelAvg.getRed()), Math.abs(PixelThis.getGreen()-PixelAvg.getGreen()), Math.abs(PixelThis.getBlue()-PixelAvg.getBlue()));
-					rep[y][x] = PixelInteret.getRed()+PixelInteret.getGreen()+PixelInteret.getBlue();
-				}
-			}
-		}
-		
-		// Afichage du tableau d'interet
-		System.out.println("\n Tableau d'interet 2 :\n");
-		for(int i=0; i<rep.length; i++){
-			for(int j=0; j<rep[i].length; j++){
-				System.out.print(rep[i][j]+" ");
-			}
-			System.out.println();
-		}
-		
-		return rep;
-	}
-	
 	public int getAverage(int a, int b){
         return (a+b)/2;
 	}
@@ -408,10 +340,11 @@ public class SeamCarvingRGB {
 	 * Moyenne des moyennes des RGB Adjacents avec la moyenne RGB courante 
 	 */
 	
-	public int[][] interest3(){
+	public int[][] interest(){
         int[][] res = new int[image.length][image[0].length];
         for(int i=0;i<image.length;i++){
                 for(int j=0;j<image[0].length;j++){
+                	if(model.getInterestModif()[i][j] == -1){
                         if(j != 0 && j != image[0].length-1){ //pixel normal
                                 int moyg = getAverageRGB(image[i][j-1].getRed(), image[i][j-1].getGreen(), image[i][j-1].getBlue());
                                 int moyd = getAverageRGB(image[i][j+1].getRed(), image[i][j+1].getGreen(), image[i][j+1].getBlue());
@@ -429,6 +362,9 @@ public class SeamCarvingRGB {
 
                                 res[i][j] = Math.abs(moycourant - moyg);
                         }
+                	}else{
+                		res[i][j] = model.getInterestModif()[i][j];
+                	}
                 }
         }
         
@@ -447,50 +383,6 @@ public class SeamCarvingRGB {
 	
 	public int moyennePixel(Pixel p){
 		return (p.getRed()+p.getGreen()+p.getBlue())/3;
-	}
-	
-	/**
-	 * Methode interest4 qui renvoie un tableau d'interet de meme taille que le tableau image
-	 * Pas encore comprise mais marche
-	 */
-	
-	public int[][] interest4() {
-		int hauteur = image.length;
-		int[][] rep = null;
-		if (hauteur > 0) {
-			int largeur = image[0].length;
-			rep = new int[hauteur][largeur];
-			for (int x = 0; x < largeur; x++) {
-				for (int y = 0; y < hauteur; y++) {
-					Pixel PixelThis = image[y][x];
-					int interetAdjacent;
-					int interetCourant = moyennePixel(PixelThis);
-					
-					if(x == 0){//pixel de gauche
-						interetAdjacent = moyennePixel(image[y][x+1]);
-					}
-					else if(x == largeur-1){//pixel de droite
-						interetAdjacent = moyennePixel(image[y][x-1]);
-					}
-					else{//autre pixel
-						interetAdjacent = (moyennePixel(image[y][x+1])+moyennePixel(image[y][x-1]))/2;
-					}
-					 
-					rep[y][x] = (interetCourant+interetAdjacent)/2;
-				}
-			}
-		}
-		
-		// Afichage du tableau d'interet
-		System.out.println("\n Tableau d'interet 4 :\n");
-		for(int i=0; i<rep.length; i++){
-			for(int j=0; j<rep[i].length; j++){
-				System.out.print(rep[i][j]+" ");
-			}
-			System.out.println();
-		}
-		
-		return rep;
 	}
 	
 	public void rechercheChemin(){
