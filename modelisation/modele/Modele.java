@@ -38,15 +38,8 @@ public class Modele extends Observable implements Runnable{
 	 * Constructeur de Modele
 	 */
 	public Modele(){
-
     	seamCarvingRGB = new SeamCarvingRGB(this);
         seamCarving = new SeamCarving(this);
-		try {
-			fileChooser();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	/**
