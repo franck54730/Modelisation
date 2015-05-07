@@ -19,6 +19,7 @@ public class EcouteurDemarrer implements ActionListener {
 		// TODO Auto-generated method stub
 		Thread t = new Thread((Runnable)m, "Traitement-image");
 		t.start() ;
+		m.setAvancement(0);
 	}
 
 }
