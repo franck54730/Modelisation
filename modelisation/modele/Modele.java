@@ -2,16 +2,24 @@ package modelisation.modele;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Observable;
 
 import javax.swing.JFileChooser;
 
 public class Modele extends Observable implements Runnable{
 	
+	private int N;
+	private int[][] interest;
+	private Graph graphe;
+	private ArrayList<Integer> chemin;
+	private SeamCarving seamCarving;
+	private SeamCarvingRGB seamCarvingRGB;
+	
 	/**
 	 * Nombre de fois que le traitement doit etre effectué (nombre de pixel à supprimer)
 	 */
-	private static final int NB_COLONNE_SUPPR = 50;
+	private static final int NB_COLONNE_SUPPR = 5;
 	
 	/**
 	 * Choix seamCarving à utiliser
@@ -29,6 +37,9 @@ public class Modele extends Observable implements Runnable{
 	 * Constructeur de Modele
 	 */
 	public Modele(){
+
+    	seamCarvingRGB = new SeamCarvingRGB(this);
+        seamCarving = new SeamCarving(this);
 		try {
 			fileChooser();
 		} catch (IOException e) {
@@ -92,12 +103,14 @@ public class Modele extends Observable implements Runnable{
                 if (ext.equals(".pgm")) {
                     System.out.println("extension: " + ext);
                     setChoixSeamCarving(typeChoix.PGM);
+                    seamCarving.lireFichier();
                     //seamCarving(fichier);
                 }
                 // si le fichier est un ppm
                 else if(ext.equals(".ppm")) {
                 	System.out.println("extension: " + ext);
                 	setChoixSeamCarving(typeChoix.PPM);
+                	seamCarvingRGB.lireFichier();
                 	//seamCarvingRGB(fichier);
                 }
                 else {
@@ -114,26 +127,24 @@ public class Modele extends Observable implements Runnable{
 	 * Methode seamCarving() qui permet le traitement d'une image PGM
 	 * @param fichier
 	 */
-    private static void seamCarving(File fichier) {
+    private void seamCarving() {
     	// TODO Auto-generated method stub
-    	SeamCarving sc = new SeamCarving(fichier);
         int boucle = 0;
         for(int i = 0; i < NB_COLONNE_SUPPR; i++){
         	System.out.println((boucle*100)/NB_COLONNE_SUPPR+"%");
-        	sc.supprColonne();
+        	seamCarving.supprColonne();
         	boucle++;
         }
         System.out.println("100% \nTraitement effectué.");
-        sc.writepgm("finalPGM.pgm");
+        seamCarving.writepgm("finalPGM.pgm");
     }
 
     /**
      * Methode seamCarvingRgb() qui permet le traitement d'une image PPM
      * @param fichier
      */
-    private static void seamCarvingRGB(File fichier) {
+    private void seamCarvingRGB() {
     	// TODO Auto-generated method stub
-    	SeamCarvingRGB sc = new SeamCarvingRGB(fichier);
     	//sc.interest1();
     	//sc.interest2();
     	//sc.interest3();
@@ -142,25 +153,60 @@ public class Modele extends Observable implements Runnable{
     	int boucle = 0;
     	for(int i = 0; i < NB_COLONNE_SUPPR; i++){
     		System.out.println((boucle*100)/NB_COLONNE_SUPPR+"%");
-    		sc.supprColonne();
+    		seamCarvingRGB.supprColonne();
     		boucle++;
     	}
     	System.out.println("100% \nTraitement effectué.");
-    	sc.writepgm("finalPPM.ppm");
+    	seamCarvingRGB.writepgm("finalPPM.ppm");
     }
 
     /**
      * Methode run() qui permet de lancer le traitement de l'image
      */
-	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		switch(choixSeamCarving){
-			case PGM : seamCarving(getFichierSelect());
+			case PGM : seamCarving();
 			break;
-			case PPM : seamCarvingRGB(getFichierSelect());
+			case PPM : seamCarvingRGB();
 			break;
 		}
+	}
+
+	/**
+	 * fonction qui set N ou N est le nombre du noeud du graph
+	 * @param i
+	 */
+	public void setN(int i) {
+		N = i;
+	}
+
+	public int getN() {
+		return N;
+	}
+
+	public void setGraph(Graph g) {
+		graphe = g;
+	}
+
+	public void setInterest(int[][] inter) {
+		interest = inter;
+	}
+
+	public Graph getGraphe() {
+		return graphe;
+	}
+
+	public int[][] getInterest() {
+		return interest;
+	}
+
+	public void setChemin(ArrayList<Integer> arrayList) {
+		chemin = arrayList;
+	}
+
+	public ArrayList<Integer> getChemin() {
+		return chemin;
 	}
 	
 }
