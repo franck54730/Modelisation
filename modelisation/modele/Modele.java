@@ -128,6 +128,7 @@ public class Modele extends Observable implements Runnable{
         	System.out.println((boucle*100)/NB_COLONNE_SUPPR+"%");
         	seamCarving.supprColonne();
         	boucle++;
+        	miseAJour();
         }
         System.out.println("100% \nTraitement effectué.");
         seamCarving.writepgm("finalPGM.pgm");
@@ -149,6 +150,7 @@ public class Modele extends Observable implements Runnable{
     		System.out.println((boucle*100)/NB_COLONNE_SUPPR+"%");
     		seamCarvingRGB.supprColonne();
     		boucle++;
+    		miseAJour();
     	}
     	System.out.println("100% \nTraitement effectué.");
     	seamCarvingRGB.writepgm("finalPPM.ppm");
@@ -215,6 +217,11 @@ public class Modele extends Observable implements Runnable{
 	
 	public Pixel[][] getImage(){
 		return choixSeamCarving == typeChoix.PGM ? seamCarving.getImage() : seamCarvingRGB.getImage();
+	}
+	
+	public void miseAJour(){
+		notifyObservers();
+		setChanged();
 	}
 	
 }
