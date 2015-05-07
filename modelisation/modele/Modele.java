@@ -45,7 +45,7 @@ public class Modele extends Observable implements Runnable{
 	/**
 	 * Nombre de fois que le traitement doit etre effectué (nombre de pixel à supprimer)
 	 */
-	private static final int NB_COLONNE_SUPPR = 50;
+	private static final int NB_COLONNE_SUPPR = 15;
 	
 	/**
 	 * Choix seamCarving à utiliser
@@ -113,31 +113,31 @@ public class Modele extends Observable implements Runnable{
             setFichierSelect(fichier);
             String fichierSelect = dialogue.getSelectedFile().toString();
             
-            System.out.println("Nom du fichier : " + fichierSelect);
+            //System.out.println("Nom du fichier : " + fichierSelect);
             
             if (fichierSelect.lastIndexOf(".") > 0) {
                 // On récupère l'extension du fichier
                 String ext = fichierSelect.substring(fichierSelect.lastIndexOf("."));
                 // Si le fichier est un pgm
                 if (ext.equals(".pgm")) {
-                    System.out.println("extension: " + ext);
+                    //System.out.println("extension: " + ext);
                     setChoixSeamCarving(typeChoix.PGM);
                     seamCarving.lireFichier();
                     //seamCarving(fichier);
                 }
                 // si le fichier est un ppm
                 else if(ext.equals(".ppm")) {
-                	System.out.println("extension: " + ext);
+                	//System.out.println("extension: " + ext);
                 	setChoixSeamCarving(typeChoix.PPM);
                 	seamCarvingRGB.lireFichier();
                 	//seamCarvingRGB(fichier);
                 }
                 else {
-                	System.out.println("Choisissez un fichier ppm ou pgm.");
+                	//System.out.println("Choisissez un fichier ppm ou pgm.");
                 }
             }
             else{
-            	System.out.println("Aucun fichier selectionné.");
+            	//System.out.println("Aucun fichier selectionné.");
             }
         }
 	}
