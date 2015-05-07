@@ -25,25 +25,7 @@ public class VueGraphique extends JPanel implements Observer{
 	
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
-		Runnable code = new Runnable() {
-
-			public void run() {
-				// TODO Auto-generated method stub
-				//vi.
-			}
-		};
-		if (SwingUtilities.isEventDispatchThread())
-			code.run() ;
-		else
-			try {
-				SwingUtilities.invokeAndWait(code) ;
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		
 	}
 	
 }
