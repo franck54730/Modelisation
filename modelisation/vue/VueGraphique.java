@@ -1,15 +1,12 @@
 package modelisation.vue;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import modelisation.modele.Modele;
 
-public class VueGraphique extends JPanel implements Observer{
+public class VueGraphique extends JPanel{
 
 	protected Modele m;
 	
@@ -18,14 +15,8 @@ public class VueGraphique extends JPanel implements Observer{
 	public VueGraphique(Modele mod) {
 		// TODO Auto-generated constructor stub
 		this.m=mod;
-		m.addObserver(this);
 		vi = new VueImage(m);
 		this.add(vi);
-	}
-	
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }
