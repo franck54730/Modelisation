@@ -23,7 +23,6 @@ class MainClass extends JFrame{
 	    
 	    pack() ;
         setVisible(true);
-	    //m.run();
 	}
 	
 	public static void main(String[] args) {
