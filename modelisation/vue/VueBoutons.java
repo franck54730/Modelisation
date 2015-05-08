@@ -15,6 +15,7 @@ import modelisation.controleur.EcouteurParcourir;
 import modelisation.controleur.EcouteurQuitter;
 import modelisation.modele.Modele;
 import modelisation.modele.Modele.TypeCoupe;
+import modelisation.modele.Modele.TypeSelection;
 
 public class VueBoutons extends JPanel implements Observer{
 	
@@ -33,7 +34,8 @@ public class VueBoutons extends JPanel implements Observer{
 	/** Attribut TypeCoupe (JLabel). */
 	protected JLabel typeSelection;
 	
-	protected JLabel occurence;
+	protected JLabel occurence;	
+	protected JLabel nbClick;
 	
 	/** Attribut m (Modele). */
 	protected Modele m;
@@ -90,6 +92,26 @@ public class VueBoutons extends JPanel implements Observer{
 		p3.add(p2);
 		this.add(p3);
 		
+
+		JPanel p4 = new JPanel();
+		p4.setBackground(Color.LIGHT_GRAY);
+		this.occurence = new JLabel("Nombre d'occurence : "+mod.getOccurence());
+		p4.add(occurence);
+		typeCoupe.setIcon(m.getTypeCoupe()==TypeCoupe.COLONNE ? iconColonne : iconLigne);
+
+		JPanel p5 = new JPanel();
+		p5.setBackground(Color.LIGHT_GRAY);
+		this.nbClick = new JLabel("Nombre de clic restant : "+(m.getTypeSelection()!=TypeSelection.NONE?(2-mod.getNbClic()):"0"));
+		p5.add(nbClick);
+		typeCoupe.setIcon(m.getTypeCoupe()==TypeCoupe.COLONNE ? iconColonne : iconLigne);
+		
+		JPanel p6 = new JPanel();
+		p6.setLayout(new BoxLayout(p6, BoxLayout.PAGE_AXIS));
+		p6.setBackground(Color.LIGHT_GRAY);
+		p6.add(p4);
+		p6.add(p5);
+		this.add(p6);
+		
 	}
 
 	public void update(Observable o, Object arg) {
@@ -110,7 +132,10 @@ public class VueBoutons extends JPanel implements Observer{
 		}
 		
 		parcourir.setEnabled(!m.IsRun());
-		demarrer.setEnabled(!m.IsRun());
+
+		this.nbClick.setText("Nombre de clic restant : "+(m.getTypeSelection()!=TypeSelection.NONE?(2-m.getNbClic()):"0"));
+		occurence.setText("Nombre d'occurence : "+m.getOccurence());
+		demarrer.setEnabled(!m.IsRun() && m.getFichierSelect() != null);
 	}
 
 }

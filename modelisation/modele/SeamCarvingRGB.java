@@ -38,11 +38,9 @@ public class SeamCarvingRGB {
 			Scanner s = new Scanner(line);
 			int width = s.nextInt();
 			int height = s.nextInt();
-			int[][] interestModif = new int[height][width];
-			for(int i = 0; i < height; i++)
-				for(int j = 0; j < width; j++)
-					interestModif[i][j] = -1;
-			model.setInterestModif(interestModif);
+			model.setWidth(width);
+			model.setHeight(height);
+			model.resetInterestModif();
 			line = d.readLine();
 			s = new Scanner(line);
 			int maxVal = s.nextInt();
@@ -72,28 +70,6 @@ public class SeamCarvingRGB {
 		catch (Throwable t) {
 			t.printStackTrace(System.err);
 			return null;
-		}
-	}
-	
-
-	
-	public void dontCoupe(int l1, int h1, int l2, int h2){
-		Graph g = model.getGraphe();
-		int[][] interestModif = model.getInterestModif();
-		for(int i = (h1>h2?h2:h1); i <= (h1>h2?h1:h2); i++){
-			for(int j = (l1>l2?l2:l1); j <= (l1>l2?l1:l2); j++){
-				interestModif[i][j] = Integer.MAX_VALUE;
-			}
-		}
-	}
-	
-	public void firstCoupe(int l1, int h1, int l2, int h2){
-		Graph g = model.getGraphe();
-		int[][] interestModif = model.getInterestModif();
-		for(int i = (h1>h2?h2:h1); i <= (h1>h2?h1:h2); i++){
-			for(int j = (l1>l2?l2:l1); j <= (l1>l2?l1:l2); j++){
-				interestModif[i][j] = 0;
-			}
 		}
 	}
 	

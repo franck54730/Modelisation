@@ -69,11 +69,11 @@ public class VueMenu extends JMenuBar implements Observer {
 		jMenuItemLigne.setIcon(new ImageIcon("src/supprLigne.png"));
 		jMenuItemLigne.addActionListener(new EcouteurLigne(m));
 		
-		jMenuItemDontCoupe = new JMenuItem("Dont-coupe");
+		jMenuItemDontCoupe = new JMenuItem("Garder");
 		jMenuItemDontCoupe.setIcon(new ImageIcon("src/dontCoupe.png"));
 		jMenuItemDontCoupe.addActionListener(new EcouteurDontCoupe(m));
 		
-		jMenuItemFirstCoupe = new JMenuItem("First-coupe");
+		jMenuItemFirstCoupe = new JMenuItem("Supprimer");
 		jMenuItemFirstCoupe.setIcon(new ImageIcon("src/firstCoupe.png"));
 		jMenuItemFirstCoupe.addActionListener(new EcouteurFirstCoupe(m));
 		
@@ -81,7 +81,7 @@ public class VueMenu extends JMenuBar implements Observer {
 		jMenuItemOccurence.setIcon(new ImageIcon("src/occurence.png"));
 		jMenuItemOccurence.addActionListener(new EcouteurOccurence(m));
 		
-		jMenuItemAnnuler = new JMenuItem("Annuler");
+		jMenuItemAnnuler = new JMenuItem("Aucun");
 		jMenuItemAnnuler.setIcon(new ImageIcon("src/noneCoupe.png"));
 		jMenuItemAnnuler.addActionListener(new EcouteurAnnuler(m));
 		
@@ -108,6 +108,7 @@ public class VueMenu extends JMenuBar implements Observer {
 
 	public void update(Observable arg0, Object arg1) {
 		// TODO Stub de la méthode généré automatiquement
+
 		System.out.println("Fichier "+(m.getFichierSelect() != null));
 		System.out.println("Run "+!m.IsRun());
 		jMenuItemEnregistrer.setEnabled(m.getFichierSelect() != null && !m.IsRun());
@@ -118,6 +119,15 @@ public class VueMenu extends JMenuBar implements Observer {
 		jMenuItemAnnuler.setEnabled(m.getTypeSelection() == TypeSelection.DONT || m.getTypeSelection() == TypeSelection.FIRST || !m.IsRun());
 		jMenuItemOccurence.setEnabled(!m.IsRun());
 		jMenuItemOuvrir.setEnabled(!m.IsRun());
+
+//		jMenuItemEnregistrer.setEnabled(m.getFichierSelect() != null);
+//		jMenuIemColonne.setEnabled(m.getTypeCoupe() != TypeCoupe.COLONNE);
+//		jMenuItemLigne.setEnabled(m.getTypeCoupe() != TypeCoupe.LIGNE);
+//		
+//		jMenuItemDontCoupe.setEnabled(m.getTypeSelection() != TypeSelection.DONT && m.getFichierSelect() != null);
+//		jMenuItemFirstCoupe.setEnabled(m.getTypeSelection() != TypeSelection.FIRST && m.getFichierSelect() != null);
+//		jMenuItemAnnuler.setEnabled(m.getTypeSelection() == TypeSelection.DONT || m.getTypeSelection() == TypeSelection.FIRST);
+
 	}
 	
 }
