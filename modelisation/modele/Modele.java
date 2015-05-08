@@ -259,7 +259,10 @@ public class Modele extends Observable implements Runnable{
         int boucle = 0;
         for(int i = 0; i < occurence; i++){
         	avancement = (boucle*100)/occurence;
-        	seamCarving.supprColonne();
+        	if(typeCoupe == TypeCoupe.COLONNE)
+        		seamCarving.supprColonne();
+        	else
+        		seamCarving.supprLigne();
         	boucle++;
         	miseAJour();
         }
@@ -283,7 +286,10 @@ public class Modele extends Observable implements Runnable{
     	int boucle = 0;
     	for(int i = 0; i < occurence; i++){
     		avancement = (boucle*100)/occurence;
-    		seamCarvingRGB.supprColonne();
+        	if(typeCoupe == TypeCoupe.COLONNE)
+        		seamCarvingRGB.supprColonne();
+        	else
+        		seamCarvingRGB.supprLigne();
     		boucle++;
     		miseAJour();
     	}
@@ -292,6 +298,15 @@ public class Modele extends Observable implements Runnable{
         resetInterestModif();
     	miseAJour();
     }
+    
+    /**
+     * echange hauteur et largeur
+     */
+    public void switchImage(){
+    	int tmp = width;
+    	width = height;
+    	height = tmp;
+    }
 
     /**
      * Methode run() qui permet de lancer le traitement de l'image
@@ -299,6 +314,7 @@ public class Modele extends Observable implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		//seamCarving.firstCoupe(18, 0, 22, 4);
+		
 		switch(choixSeamCarving){
 			case PGM : seamCarving();
 			break;
