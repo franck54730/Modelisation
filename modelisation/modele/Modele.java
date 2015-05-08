@@ -215,7 +215,7 @@ public class Modele extends Observable implements Runnable{
 	    		fichierSelect = fichierSelect.substring(0, fichierSelect.length()-2);
 	    		fichierSelect = fichierSelect+(choixSeamCarving==typeChoix.PPM? ".ppm" : ".pgm");
 	    	}
-	    	System.out.println(fichierSelect);
+	    	//System.out.println(fichierSelect);
             //sauvegarde du fichier
 	    	if(choixSeamCarving == typeChoix.PGM){
 		        seamCarving.writepgm(fichierSelect);
