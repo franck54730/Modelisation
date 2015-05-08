@@ -355,7 +355,7 @@ public class Modele extends Observable implements Runnable{
 		occurence = o;
 	}
 	
-	public int getOccurence(int o){
+	public int getOccurence(){
 		return occurence;
 	}
 	

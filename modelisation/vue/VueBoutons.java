@@ -109,6 +109,7 @@ public class VueBoutons extends JPanel implements Observer{
 			break;
 		}
 		
+		parcourir.setEnabled(!m.IsRun());
 		demarrer.setEnabled(!m.IsRun());
 	}
 
