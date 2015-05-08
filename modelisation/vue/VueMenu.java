@@ -9,6 +9,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import modelisation.controleur.EcouteurAnnuler;
+import modelisation.controleur.EcouteurAucun;
 import modelisation.controleur.EcouteurColonne;
 import modelisation.controleur.EcouteurDontCoupe;
 import modelisation.controleur.EcouteurFirstCoupe;
@@ -32,6 +33,7 @@ public class VueMenu extends JMenuBar implements Observer {
 	protected JMenuItem jMenuIemColonne;
 	protected JMenuItem jMenuItemLigne;
 	protected JMenuItem jMenuItemDontCoupe;
+	protected JMenuItem jMenuItemAucun;
 	protected JMenuItem jMenuItemFirstCoupe;
 	protected JMenuItem jMenuItemOccurence;
 	private JMenuItem jMenuItemAnnuler;
@@ -81,8 +83,12 @@ public class VueMenu extends JMenuBar implements Observer {
 		jMenuItemOccurence.setIcon(new ImageIcon("src/occurence.png"));
 		jMenuItemOccurence.addActionListener(new EcouteurOccurence(m));
 		
-		jMenuItemAnnuler = new JMenuItem("Aucun");
-		jMenuItemAnnuler.setIcon(new ImageIcon("src/noneCoupe.png"));
+		jMenuItemAucun = new JMenuItem("Aucun");
+		jMenuItemAucun.setIcon(new ImageIcon("src/noneCoupe.png"));
+		jMenuItemAucun.addActionListener(new EcouteurAucun(m));
+		
+		jMenuItemAnnuler = new JMenuItem("Annuler");
+		jMenuItemAnnuler.setIcon(new ImageIcon("src/annulerCoupe.png"));
 		jMenuItemAnnuler.addActionListener(new EcouteurAnnuler(m));
 		
 		jMenu1.add(jMenuItemOuvrir);
@@ -95,6 +101,7 @@ public class VueMenu extends JMenuBar implements Observer {
 		
 		jMenu22.add(jMenuItemDontCoupe);
 		jMenu22.add(jMenuItemFirstCoupe);
+		jMenu22.add(jMenuItemAucun);
 		jMenu22.add(jMenuItemAnnuler);
 		
 		this.add(jMenu1);
@@ -112,11 +119,12 @@ public class VueMenu extends JMenuBar implements Observer {
 		jMenuItemEnregistrer.setEnabled(m.getFichierSelect() != null && !m.IsRun());
 		jMenuIemColonne.setEnabled(m.getTypeCoupe() != TypeCoupe.COLONNE && !m.IsRun());
 		jMenuItemLigne.setEnabled(m.getTypeCoupe() != TypeCoupe.LIGNE & !m.IsRun());
-		jMenuItemDontCoupe.setEnabled(m.getTypeSelection() != TypeSelection.DONT && !m.IsRun());
-		jMenuItemFirstCoupe.setEnabled(m.getTypeSelection() != TypeSelection.FIRST && !m.IsRun());
-		jMenuItemAnnuler.setEnabled((m.getTypeSelection() == TypeSelection.DONT || m.getTypeSelection() == TypeSelection.FIRST) && !m.IsRun());
+		jMenuItemDontCoupe.setEnabled(m.getTypeSelection() != TypeSelection.DONT && !m.IsRun() && m.getFichierSelect() != null);
+		jMenuItemFirstCoupe.setEnabled(m.getTypeSelection() != TypeSelection.FIRST && !m.IsRun() && m.getFichierSelect() != null);
+		jMenuItemAucun.setEnabled((m.getTypeSelection() == TypeSelection.DONT || m.getTypeSelection() == TypeSelection.FIRST) && !m.IsRun());
 		jMenuItemOccurence.setEnabled(!m.IsRun());
 		jMenuItemOuvrir.setEnabled(!m.IsRun());
+		jMenuItemAnnuler.setEnabled(!m.IsRun() && m.getFichierSelect() != null && m.isInteretModifier());
 
 //		jMenuItemEnregistrer.setEnabled(m.getFichierSelect() != null);
 //		jMenuIemColonne.setEnabled(m.getTypeCoupe() != TypeCoupe.COLONNE);

@@ -22,6 +22,16 @@ public class Modele extends Observable implements Runnable{
 	private int avancement = 0;
 	private int nbClick = 0;
 	private int height;
+	private boolean interetModifier = false;
+	
+	public boolean isInteretModifier() {
+		return interetModifier;
+	}
+
+	public void setInteretModifier(boolean interetModifier) {
+		this.interetModifier = interetModifier;
+	}
+
 	public int getHeight() {
 		return height;
 	}
@@ -416,6 +426,7 @@ public class Modele extends Observable implements Runnable{
 	                }else {
 	                	dontCoupe(posX1, posY1, posX2, posY2);
 	                }
+	                interetModifier = true;
 	                typeSelection = TypeSelection.NONE;
 		        }
 			}
@@ -425,6 +436,7 @@ public class Modele extends Observable implements Runnable{
 	
 	
 	public void resetInterestModif(){
+		interetModifier = false;
 		interestModif = new int[height][width];
 		for(int i = 0; i < height; i++)
 			for(int j = 0; j < width; j++)
