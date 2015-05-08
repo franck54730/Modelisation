@@ -73,7 +73,7 @@ public class Modele extends Observable implements Runnable{
 	/**
 	 * Nombre de fois que le traitement doit etre effectué (nombre de pixel à supprimer)
 	 */
-	private int occurence = 10;
+	private int occurence = 1;
 	
 	/**
 	 * Choix seamCarving à utiliser

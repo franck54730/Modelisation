@@ -20,6 +20,7 @@ public class EcouteurParcourir implements ActionListener {
 		// TODO Auto-generated method stub
 		try {
 			m.fileChooserOpen();
+			m.setOccurence(1);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

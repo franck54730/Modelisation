@@ -18,6 +18,7 @@ public class EcouteurColonne implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		m.setTypeCoupe(TypeCoupe.COLONNE);
+		m.setOccurence(1);
 	}
 
 }

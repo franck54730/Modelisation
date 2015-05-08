@@ -18,6 +18,7 @@ public class EcouteurLigne implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		m.setTypeCoupe(TypeCoupe.LIGNE);
+		m.setOccurence(1);
 	}
 
 }
