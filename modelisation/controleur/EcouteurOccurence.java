@@ -17,7 +17,6 @@ public class EcouteurOccurence implements ActionListener {
 		this.m=mod;
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		boolean bon = false;

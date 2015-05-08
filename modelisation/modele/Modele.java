@@ -1,5 +1,6 @@
 package modelisation.modele;
 
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,6 +20,29 @@ public class Modele extends Observable implements Runnable{
 	private SeamCarving seamCarving;
 	private SeamCarvingRGB seamCarvingRGB;
 	private int avancement = 0;
+	private int nbClick = 0;
+	private int height;
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	private int width;
+	private int posX1;
+	private int posX2;
+	private int posY1;
+	private int posY2;
 	
 	public enum TypeCoupe {LIGNE,COLONNE};
 	private TypeCoupe typeCoupe = TypeCoupe.COLONNE;
@@ -241,6 +265,7 @@ public class Modele extends Observable implements Runnable{
         }
         avancement = 100;
         setRun(false);
+        resetInterestModif();
         miseAJour();
     }
 
@@ -264,6 +289,7 @@ public class Modele extends Observable implements Runnable{
     	}
     	avancement = 100;
     	setRun(false);
+        resetInterestModif();
     	miseAJour();
     }
 
@@ -350,13 +376,71 @@ public class Modele extends Observable implements Runnable{
 	public void setRun(boolean b){
 		run = b;
 	}
+
+	public void doClick(MouseEvent arg0) {
+		if(typeSelection != TypeSelection.NONE && fichierSelect != null){
+			if(arg0.getY() > interestModif.length || arg0.getX() > interestModif[0].length){
+				JOptionPane.showMessageDialog(null,
+        			    "Veuillez cliqué sur l'image pour la selection.",
+        			    "Attention",
+        			    JOptionPane.WARNING_MESSAGE);	
+				nbClick = 0;
+			}else{
+				nbClick++;
+		        if(nbClick==1){
+		                posX1 = arg0.getX();
+		                posY1 = arg0.getY();
+		        }
+		        if(nbClick==2){
+	                posX2 = arg0.getX();
+	                posY2 = arg0.getY();
+	                nbClick = 0;
+	                if(typeSelection == TypeSelection.FIRST){
+	                	firstCoupe(posX1, posY1, posX2, posY2);
+	                }else {
+	                	dontCoupe(posX1, posY1, posX2, posY2);
+	                }
+	                typeSelection = TypeSelection.NONE;
+		        }
+			}
+		}
+		miseAJour();
+	}
+	
+	
+	public void resetInterestModif(){
+		interestModif = new int[height][width];
+		for(int i = 0; i < height; i++)
+			for(int j = 0; j < width; j++)
+				interestModif[i][j] = -1;
+	}
+	
+	public void dontCoupe(int l1, int h1, int l2, int h2){
+		for(int i = (h1>h2?h2:h1); i <= (h1>h2?h1:h2); i++){
+			for(int j = (l1>l2?l2:l1); j <= (l1>l2?l1:l2); j++){
+				interestModif[i][j] = Integer.MAX_VALUE;
+			}
+		}
+	}
+	
+	public void firstCoupe(int l1, int h1, int l2, int h2){
+		for(int i = (h1>h2?h2:h1); i <= (h1>h2?h1:h2); i++){
+			for(int j = (l1>l2?l2:l1); j <= (l1>l2?l1:l2); j++){
+				interestModif[i][j] = 0;
+			}
+		}
+	}
 	
 	public void setOccurence(int o){
 		occurence = o;
+		miseAJour();
 	}
 	
-	public int getOccurence(int o){
+	public int getOccurence(){
 		return occurence;
 	}
 	
+	public int getNbClic(){
+		return nbClick;
+	}
 }
