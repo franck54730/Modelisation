@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Modele extends Observable implements Runnable{
 	
@@ -100,11 +102,15 @@ public class Modele extends Observable implements Runnable{
 	}
 	
 	/**
-	 * Methode fileChooser() qui permet la selection du fichier + settage de choix du fichier
+	 * Methode fileChooserOpen() qui permet la selection du fichier + settage de choix du fichier
 	 * @throws IOException
 	 */
-	public void fileChooser() throws IOException {
-		JFileChooser dialogue = new JFileChooser(new File("."));
+	public void fileChooserOpen() throws IOException {
+		JFileChooser dialogue = new JFileChooser(new File("."));//"~"));  a décommenté version final
+		dialogue.setDialogTitle("Ouvrir un fichier PGM ou PPM");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+		        "PGM & PPM Images", "ppm", "pgm");
+		dialogue.setFileFilter(filter);
         File fichier = null;
        
         if (dialogue.showOpenDialog(null)==
@@ -143,6 +149,82 @@ public class Modele extends Observable implements Runnable{
 	}
 	
 	/**
+	 * Methode fileChooserSave() qui permet la selection du fichier + settage de choix du fichier
+	 * @throws IOException
+	 */
+	public void fileChooserSave() throws IOException {
+		JFileChooser dialogue = new JFileChooser(fichierSelect);
+		dialogue.setDialogTitle("Sauvegarder votre fichier");  		
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("PGM & PPM Images", "ppm", "pgm");
+		dialogue.setFileFilter(filter); 
+		dialogue.setSelectedFile(fichierSelect);
+        File fichier = null;
+		if (dialogue.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+		    fichier = dialogue.getSelectedFile();
+		    
+		    String fichierSelect = dialogue.getSelectedFile().toString();
+		    int index = fichierSelect.lastIndexOf(".");
+	    	if(index != fichierSelect.length()-1){
+			    if (index != -1) {
+	                // On récupère l'extension du fichier
+	                String ext = fichierSelect.substring(fichierSelect.lastIndexOf("."));
+	                // Si le fichier est un pgm
+	                if (ext.equals(".pgm")) {
+	                	if(choixSeamCarving != typeChoix.PGM){
+	                		//on change pour lui et on l'avertie
+	                		JOptionPane.showMessageDialog(null,
+	                			    "L'extention que vous avez choisi ne correspond pas a celle de votre fichier\n" +
+	                			    "initiale, le programme l'a changé pour vous.",
+	                			    "Attention",
+	                			    JOptionPane.WARNING_MESSAGE);
+	        			    index = fichierSelect.lastIndexOf(".");
+	        	    		fichierSelect = fichierSelect.substring(0, index);
+	        	    		fichierSelect = fichierSelect+".ppm";
+	                	}
+	                }
+	                // si le fichier est un ppm
+	                else if(ext.equals(".ppm")) {
+	                	if(choixSeamCarving != typeChoix.PPM){
+	                		//on change pour lui et on l'avertie
+	                		JOptionPane.showMessageDialog(null,
+	                			    "L'extention que vous avez choisi ne correspond pas a celle de votre fichier\n" +
+	                			    "initiale, le programme l'a changé pour vous.",
+	                			    "Attention",
+	                			    JOptionPane.WARNING_MESSAGE);	 
+            				index = fichierSelect.lastIndexOf(".");
+	        	    		fichierSelect = fichierSelect.substring(0, index);
+	        	    		fichierSelect = fichierSelect+".pgm";
+	                	}
+	                }else {
+	                	//on change pour lui 
+	                	JOptionPane.showMessageDialog(null,
+                			    "L'extention que vous avez choisi ne correspond pas a celle de votre fichier\n" +
+                			    "initiale, le programme l'a changé pour vous.",
+                			    "Attention",
+                			    JOptionPane.WARNING_MESSAGE);
+        				index = fichierSelect.lastIndexOf(".");
+        	    		fichierSelect = fichierSelect.substring(0, index);
+        	    		fichierSelect = fichierSelect+(choixSeamCarving==typeChoix.PPM? ".ppm" : ".pgm");
+	                }
+	            }else{//pas d'extentions on l'a rajoute
+    	    		fichierSelect = fichierSelect+(choixSeamCarving==typeChoix.PPM? ".ppm" : ".pgm");
+	            }
+	    	}else{// juste un point a la fin
+	    		fichierSelect = fichierSelect.substring(0, fichierSelect.length()-2);
+	    		fichierSelect = fichierSelect+(choixSeamCarving==typeChoix.PPM? ".ppm" : ".pgm");
+	    	}
+	    	System.out.println(fichierSelect);
+            //sauvegarde du fichier
+	    	if(choixSeamCarving == typeChoix.PGM){
+		        seamCarving.writepgm(fichierSelect);
+	    	}else{
+		        seamCarvingRGB.writepgm(fichierSelect);
+	    	}
+            miseAJour();
+		}
+	}
+	
+	/**
 	 * Methode seamCarving() qui permet le traitement d'une image PGM
 	 * @param fichier
 	 */
@@ -157,7 +239,6 @@ public class Modele extends Observable implements Runnable{
         }
         avancement = 100;
         miseAJour();
-        seamCarving.writepgm("finalPGM.pgm");
     }
 
     /**
@@ -180,7 +261,6 @@ public class Modele extends Observable implements Runnable{
     	}
     	avancement = 100;
     	miseAJour();
-    	seamCarvingRGB.writepgm("finalPPM.ppm");
     }
 
     /**
