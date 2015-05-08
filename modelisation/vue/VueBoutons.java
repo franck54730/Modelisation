@@ -130,6 +130,9 @@ public class VueBoutons extends JPanel implements Observer{
 		default:
 			break;
 		}
+		
+		parcourir.setEnabled(!m.IsRun());
+
 		this.nbClick.setText("Nombre de clic restant : "+(m.getTypeSelection()!=TypeSelection.NONE?(2-m.getNbClic()):"0"));
 		occurence.setText("Nombre d'occurence : "+m.getOccurence());
 		demarrer.setEnabled(!m.IsRun() && m.getFichierSelect() != null);
