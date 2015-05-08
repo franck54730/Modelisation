@@ -22,6 +22,16 @@ public class Modele extends Observable implements Runnable{
 	private int avancement = 0;
 	private int nbClick = 0;
 	private int height;
+	private boolean interetModifier = false;
+	
+	public boolean isInteretModifier() {
+		return interetModifier;
+	}
+
+	public void setInteretModifier(boolean interetModifier) {
+		this.interetModifier = interetModifier;
+	}
+
 	public int getHeight() {
 		return height;
 	}
@@ -259,7 +269,10 @@ public class Modele extends Observable implements Runnable{
         int boucle = 0;
         for(int i = 0; i < occurence; i++){
         	avancement = (boucle*100)/occurence;
-        	seamCarving.supprColonne();
+        	if(typeCoupe == TypeCoupe.COLONNE)
+        		seamCarving.supprColonne();
+        	else
+        		seamCarving.supprLigne();
         	boucle++;
         	miseAJour();
         }
@@ -283,7 +296,10 @@ public class Modele extends Observable implements Runnable{
     	int boucle = 0;
     	for(int i = 0; i < occurence; i++){
     		avancement = (boucle*100)/occurence;
-    		seamCarvingRGB.supprColonne();
+        	if(typeCoupe == TypeCoupe.COLONNE)
+        		seamCarvingRGB.supprColonne();
+        	else
+        		seamCarvingRGB.supprLigne();
     		boucle++;
     		miseAJour();
     	}
@@ -292,6 +308,15 @@ public class Modele extends Observable implements Runnable{
         resetInterestModif();
     	miseAJour();
     }
+    
+    /**
+     * echange hauteur et largeur
+     */
+    public void switchImage(){
+    	int tmp = width;
+    	width = height;
+    	height = tmp;
+    }
 
     /**
      * Methode run() qui permet de lancer le traitement de l'image
@@ -299,6 +324,7 @@ public class Modele extends Observable implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		//seamCarving.firstCoupe(18, 0, 22, 4);
+		
 		switch(choixSeamCarving){
 			case PGM : seamCarving();
 			break;
@@ -400,6 +426,7 @@ public class Modele extends Observable implements Runnable{
 	                }else {
 	                	dontCoupe(posX1, posY1, posX2, posY2);
 	                }
+	                interetModifier = true;
 	                typeSelection = TypeSelection.NONE;
 		        }
 			}
@@ -409,6 +436,7 @@ public class Modele extends Observable implements Runnable{
 	
 	
 	public void resetInterestModif(){
+		interetModifier = false;
 		interestModif = new int[height][width];
 		for(int i = 0; i < height; i++)
 			for(int j = 0; j < width; j++)

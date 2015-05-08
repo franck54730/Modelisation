@@ -6,19 +6,18 @@ import java.awt.event.ActionListener;
 import modelisation.modele.Modele;
 import modelisation.modele.Modele.TypeSelection;
 
-public class EcouteurAnnuler implements ActionListener{
+public class EcouteurAucun implements ActionListener{
 	
 	protected Modele m;
 
-	public EcouteurAnnuler(Modele mod) {
+	public EcouteurAucun(Modele mod) {
 		// TODO Auto-generated constructor stub
 		this.m=mod;
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		m.resetInterestModif();
-		m.miseAJour();
+		m.setTypeSelection(TypeSelection.NONE);
 	}
 
 }

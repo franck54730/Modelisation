@@ -727,13 +727,15 @@ public class SeamCarving {
 	}
 	
 	public void supprLigne(){
-		rotationTabDroite();
+		rotationTabDroite(image);
+		model.switchImage();
 		toGraph();
 		flowMax();
         ArrayList<Integer> s = getNoeudAccessibles();
         int[] coupe = getCoupeFinale(s);
 		supprCoupe(coupe);
-		rotationTabGauche();
+		rotationTabGauche(image);
+		model.switchImage();
 	}
 	
 
@@ -782,29 +784,29 @@ public class SeamCarving {
 		return retour;
 	}
 	
-	public int[][] rotationTabDroite() {
-		int[][]res = new int[image[0].length][image.length];
-		int[][] interetModif = new int[image.length][image[0].length-1];
-		for (int i = 0; i < image[0].length; i++) {
-			for (int j = 0; j < image.length; j++) {
-				res[i][j]=image[image.length-j-1][i];
-            	interetModif[i][j] = model.getInterestModif()[image.length-j-1][i];
-			}
-		}
+	public int[][] rotationTabDroite(int[][] tableau) {
+		int[][]res = new int[tableau[0].length][tableau.length];
+        int[][]interetModif = new int[tableau[0].length][tableau.length];
+        for (int i = 0; i < tableau[0].length; i++) {
+                for (int j = 0; j < tableau.length; j++) {
+                        res[i][j]=tableau[tableau.length-j-1][i];
+                        interetModif[i][j]=model.getInterestModif()[tableau.length-j-1][i];
+                }
+        }
         model.setInterestModif(interetModif);
-		return res;
+        return res;
 	}
-	
-	public int[][] rotationTabGauche() {
-		int[][]res = new int[image[0].length][image.length];
-		int[][] interetModif = new int[image.length][image[0].length-1];
-		for (int i = 0; i < image[0].length; i++) {
-			for (int j = 0; j < image.length; j++) {
-				res[i][j]=image[image.length-j-1][i];
-            	interetModif[i][j] = model.getInterestModif()[image.length-j-1][i];
-			}
-		}
+
+	public int[][] rotationTabGauche(int[][] tableau) {
+		int[][]res = new int[tableau[0].length][tableau.length];
+        int[][]interetModif = new int[tableau[0].length][tableau.length];
+        for (int i = 0; i < tableau[0].length; i++) {
+                for (int j = 0; j < tableau.length; j++) {
+                        res[i][j]=tableau[j][tableau[0].length-i-1];
+                        interetModif[i][j]=model.getInterestModif()[j][tableau[0].length-i-1];
+                }
+        }
         model.setInterestModif(interetModif);
-		return res;
+        return res;
 	}
 }

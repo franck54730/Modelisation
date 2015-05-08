@@ -255,39 +255,41 @@ public class SeamCarvingRGB {
 	}
 	
 	public void supprLigne(){
-		image = rotationTabDroite();
+		image = rotationTabDroite(image);
+		model.switchImage();
 		toGraph();
 		flowMax();
         ArrayList<Integer> s = getNoeudAccessibles();
         int[] coupe = getCoupeFinale(s);
 		supprCoupe(coupe);
-		image = rotationTabGauche();
+		image = rotationTabGauche(image);
+		model.switchImage();
 	}
 	
-	public Pixel[][] rotationTabDroite() {
-		Pixel[][]res = new Pixel[image[0].length][image.length];
-		int[][] interetModif = new int[image.length][image[0].length-1];
-		for (int i = 0; i < image[0].length; i++) {
-			for (int j = 0; j < image.length; j++) {
-				res[i][j]=image[image.length-j-1][i];
-            	interetModif[i][j] = model.getInterestModif()[image.length-j-1][i];
-			}
-		}
+	public Pixel[][] rotationTabDroite(Pixel[][] tableau) {
+		Pixel[][]res = new Pixel[tableau[0].length][tableau.length];
+        int[][]interetModif = new int[tableau[0].length][tableau.length];
+        for (int i = 0; i < tableau[0].length; i++) {
+                for (int j = 0; j < tableau.length; j++) {
+                        res[i][j]=tableau[tableau.length-j-1][i];
+                        interetModif[i][j]=model.getInterestModif()[tableau.length-j-1][i];
+                }
+        }
         model.setInterestModif(interetModif);
-		return res;
+        return res;
 	}
-	
-	public Pixel[][] rotationTabGauche() {
-		Pixel[][]res = new Pixel[image[0].length][image.length];
-		int[][] interetModif = new int[image.length][image[0].length-1];
-		for (int i = 0; i < image[0].length; i++) {
-			for (int j = 0; j < image.length; j++) {
-				res[i][j]=image[image.length-j-1][i];
-            	interetModif[i][j] = model.getInterestModif()[image.length-j-1][i];
-			}
-		}
+
+	public Pixel[][] rotationTabGauche(Pixel[][] tableau) {
+		Pixel[][]res = new Pixel[tableau[0].length][tableau.length];
+        int[][]interetModif = new int[tableau[0].length][tableau.length];
+        for (int i = 0; i < tableau[0].length; i++) {
+                for (int j = 0; j < tableau.length; j++) {
+                        res[i][j]=tableau[j][tableau[0].length-i-1];
+                        interetModif[i][j]=model.getInterestModif()[j][tableau[0].length-i-1];
+                }
+        }
         model.setInterestModif(interetModif);
-		return res;
+        return res;
 	}
 	
 	public int[] getCoupeFinale(ArrayList<Integer> tab){
