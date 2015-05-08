@@ -16,6 +16,7 @@ import modelisation.controleur.EcouteurLigne;
 import modelisation.controleur.EcouteurOccurence;
 import modelisation.controleur.EcouteurParcourir;
 import modelisation.controleur.EcouteurQuitter;
+import modelisation.controleur.EcouteurSauvegarder;
 import modelisation.modele.Modele;
 import modelisation.modele.Modele.TypeCoupe;
 import modelisation.modele.Modele.TypeSelection;
@@ -54,6 +55,7 @@ public class VueMenu extends JMenuBar implements Observer {
 		
 		jMenuItemEnregistrer = new JMenuItem("Enregistrer-sous");
 		jMenuItemEnregistrer.setIcon(new ImageIcon("src/enregistrer.png"));
+		jMenuItemEnregistrer.addActionListener(new EcouteurSauvegarder(m));
 		
 		jMenuItemQuitter = new JMenuItem("Quitter");
 		jMenuItemQuitter.setIcon(new ImageIcon("src/quitter-menu.png"));
@@ -106,6 +108,7 @@ public class VueMenu extends JMenuBar implements Observer {
 
 	public void update(Observable arg0, Object arg1) {
 		// TODO Stub de la méthode généré automatiquement
+		jMenuItemEnregistrer.setEnabled(m.getFichierSelect() != null);
 		jMenuIemColonne.setEnabled(m.getTypeCoupe() != TypeCoupe.COLONNE);
 		jMenuItemLigne.setEnabled(m.getTypeCoupe() != TypeCoupe.LIGNE);
 		
