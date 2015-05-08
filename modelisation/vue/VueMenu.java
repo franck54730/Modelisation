@@ -109,14 +109,12 @@ public class VueMenu extends JMenuBar implements Observer {
 	public void update(Observable arg0, Object arg1) {
 		// TODO Stub de la méthode généré automatiquement
 
-		System.out.println("Fichier "+(m.getFichierSelect() != null));
-		System.out.println("Run "+!m.IsRun());
 		jMenuItemEnregistrer.setEnabled(m.getFichierSelect() != null && !m.IsRun());
 		jMenuIemColonne.setEnabled(m.getTypeCoupe() != TypeCoupe.COLONNE && !m.IsRun());
 		jMenuItemLigne.setEnabled(m.getTypeCoupe() != TypeCoupe.LIGNE & !m.IsRun());
 		jMenuItemDontCoupe.setEnabled(m.getTypeSelection() != TypeSelection.DONT && !m.IsRun());
 		jMenuItemFirstCoupe.setEnabled(m.getTypeSelection() != TypeSelection.FIRST && !m.IsRun());
-		jMenuItemAnnuler.setEnabled(m.getTypeSelection() == TypeSelection.DONT || m.getTypeSelection() == TypeSelection.FIRST || !m.IsRun());
+		jMenuItemAnnuler.setEnabled((m.getTypeSelection() == TypeSelection.DONT || m.getTypeSelection() == TypeSelection.FIRST) && !m.IsRun());
 		jMenuItemOccurence.setEnabled(!m.IsRun());
 		jMenuItemOuvrir.setEnabled(!m.IsRun());
 
