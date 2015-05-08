@@ -33,6 +33,8 @@ public class VueBoutons extends JPanel implements Observer{
 	/** Attribut TypeCoupe (JLabel). */
 	protected JLabel typeSelection;
 	
+	protected JLabel occurence;
+	
 	/** Attribut m (Modele). */
 	protected Modele m;
 	

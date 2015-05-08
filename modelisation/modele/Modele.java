@@ -49,7 +49,7 @@ public class Modele extends Observable implements Runnable{
 	/**
 	 * Nombre de fois que le traitement doit etre effectué (nombre de pixel à supprimer)
 	 */
-	private static final int NB_COLONNE_SUPPR = 50;
+	private int occurence = 10;
 	
 	/**
 	 * Choix seamCarving à utiliser
@@ -233,8 +233,8 @@ public class Modele extends Observable implements Runnable{
     private void seamCarving() {
     	// TODO Auto-generated method stub
         int boucle = 0;
-        for(int i = 0; i < NB_COLONNE_SUPPR; i++){
-        	avancement = (boucle*100)/NB_COLONNE_SUPPR;
+        for(int i = 0; i < occurence; i++){
+        	avancement = (boucle*100)/occurence;
         	seamCarving.supprColonne();
         	boucle++;
         	miseAJour();
@@ -256,8 +256,8 @@ public class Modele extends Observable implements Runnable{
     	//sc.interest4();
     		
     	int boucle = 0;
-    	for(int i = 0; i < NB_COLONNE_SUPPR; i++){
-    		avancement = (boucle*100)/NB_COLONNE_SUPPR;
+    	for(int i = 0; i < occurence; i++){
+    		avancement = (boucle*100)/occurence;
     		seamCarvingRGB.supprColonne();
     		boucle++;
     		miseAJour();
@@ -349,6 +349,14 @@ public class Modele extends Observable implements Runnable{
 	
 	public void setRun(boolean b){
 		run = b;
+	}
+	
+	public void setOccurence(int o){
+		occurence = o;
+	}
+	
+	public int getOccurence(int o){
+		return occurence;
 	}
 	
 }
