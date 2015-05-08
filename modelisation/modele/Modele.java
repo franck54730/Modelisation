@@ -407,7 +407,7 @@ public class Modele extends Observable implements Runnable{
 		if(typeSelection != TypeSelection.NONE && fichierSelect != null){
 			if(arg0.getY() > interestModif.length || arg0.getX() > interestModif[0].length){
 				JOptionPane.showMessageDialog(null,
-        			    "Veuillez cliqué sur l'image pour la selection.",
+        			    "Veuillez cliquer sur l'image pour la selection.",
         			    "Attention",
         			    JOptionPane.WARNING_MESSAGE);	
 				nbClick = 0;
