@@ -8,14 +8,17 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import modelisation.controleur.EcouteurAnnuler;
 import modelisation.controleur.EcouteurColonne;
 import modelisation.controleur.EcouteurDontCoupe;
 import modelisation.controleur.EcouteurFirstCoupe;
 import modelisation.controleur.EcouteurLigne;
+import modelisation.controleur.EcouteurOccurence;
 import modelisation.controleur.EcouteurParcourir;
 import modelisation.controleur.EcouteurQuitter;
 import modelisation.modele.Modele;
 import modelisation.modele.Modele.TypeCoupe;
+import modelisation.modele.Modele.TypeSelection;
 
 
 public class VueMenu extends JMenuBar implements Observer {
@@ -29,6 +32,8 @@ public class VueMenu extends JMenuBar implements Observer {
 	protected JMenuItem jMenuItemLigne;
 	protected JMenuItem jMenuItemDontCoupe;
 	protected JMenuItem jMenuItemFirstCoupe;
+	protected JMenuItem jMenuItemOccurence;
+	private JMenuItem jMenuItemAnnuler;
 	
 	
 	public VueMenu(Modele mod) {
@@ -36,6 +41,12 @@ public class VueMenu extends JMenuBar implements Observer {
 		m.addObserver(this);
 		JMenu jMenu1 = new JMenu("Fichier");
 		JMenu jMenu2 = new JMenu("Options");
+		
+		JMenu jMenu21 = new JMenu("Coupe");
+		jMenu2.add(jMenu21);
+		
+		JMenu jMenu22 = new JMenu("Selection");
+		jMenu2.add(jMenu22);
 		
 		jMenuItemOuvrir = new JMenuItem("Ouvrir");
 		jMenuItemOuvrir.setIcon(new ImageIcon("src/parcourir-menu.png"));
@@ -64,14 +75,25 @@ public class VueMenu extends JMenuBar implements Observer {
 		jMenuItemFirstCoupe.setIcon(new ImageIcon("src/firstCoupe.png"));
 		jMenuItemFirstCoupe.addActionListener(new EcouteurFirstCoupe(m));
 		
+		jMenuItemOccurence = new JMenuItem("Occurence");
+		jMenuItemOccurence.setIcon(new ImageIcon("src/occurence.png"));
+		jMenuItemOccurence.addActionListener(new EcouteurOccurence(m));
+		
+		jMenuItemAnnuler = new JMenuItem("Annuler");
+		jMenuItemAnnuler.setIcon(new ImageIcon("src/noneCoupe.png"));
+		jMenuItemAnnuler.addActionListener(new EcouteurAnnuler(m));
+		
 		jMenu1.add(jMenuItemOuvrir);
 		jMenu1.add(jMenuItemEnregistrer);
 		jMenu1.add(jMenuItemQuitter);
 		
-		jMenu2.add(jMenuIemColonne);
-		jMenu2.add(jMenuItemLigne);
-		jMenu2.add(jMenuItemDontCoupe);
-		jMenu2.add(jMenuItemFirstCoupe);
+		jMenu21.add(jMenuIemColonne);
+		jMenu21.add(jMenuItemLigne);
+		jMenu21.add(jMenuItemOccurence);
+		
+		jMenu22.add(jMenuItemDontCoupe);
+		jMenu22.add(jMenuItemFirstCoupe);
+		jMenu22.add(jMenuItemAnnuler);
 		
 		this.add(jMenu1);
 		this.add(jMenu2);
@@ -86,6 +108,10 @@ public class VueMenu extends JMenuBar implements Observer {
 		// TODO Stub de la méthode généré automatiquement
 		jMenuIemColonne.setEnabled(m.getTypeCoupe() != TypeCoupe.COLONNE);
 		jMenuItemLigne.setEnabled(m.getTypeCoupe() != TypeCoupe.LIGNE);
+		
+		jMenuItemDontCoupe.setEnabled(m.getTypeSelection() != TypeSelection.DONT);
+		jMenuItemFirstCoupe.setEnabled(m.getTypeSelection() != TypeSelection.FIRST);
+		jMenuItemAnnuler.setEnabled(m.getTypeSelection() == TypeSelection.DONT || m.getTypeSelection() == TypeSelection.FIRST);
 	}
 	
 }

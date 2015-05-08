@@ -24,6 +24,8 @@ public class Modele extends Observable implements Runnable{
 	public enum TypeSelection {FIRST,DONT,NONE};
 	private TypeSelection typeSelection = TypeSelection.NONE;
 	
+	private boolean run = false;
+	
 	public TypeCoupe getTypeCoupe(){
 		return typeCoupe;
 	}
@@ -45,7 +47,7 @@ public class Modele extends Observable implements Runnable{
 	/**
 	 * Nombre de fois que le traitement doit etre effectué (nombre de pixel à supprimer)
 	 */
-	private static final int NB_COLONNE_SUPPR = 15;
+	private static final int NB_COLONNE_SUPPR = 50;
 	
 	/**
 	 * Choix seamCarving à utiliser
@@ -156,6 +158,7 @@ public class Modele extends Observable implements Runnable{
         	miseAJour();
         }
         avancement = 100;
+        setRun(false);
         miseAJour();
         seamCarving.writepgm("finalPGM.pgm");
     }
@@ -179,6 +182,7 @@ public class Modele extends Observable implements Runnable{
     		miseAJour();
     	}
     	avancement = 100;
+    	setRun(false);
     	miseAJour();
     	seamCarvingRGB.writepgm("finalPPM.ppm");
     }
@@ -257,6 +261,14 @@ public class Modele extends Observable implements Runnable{
 	
 	public int getAvancement(){
 		return avancement;
+	}
+	
+	public boolean IsRun(){
+		return run;
+	}
+	
+	public void setRun(boolean b){
+		run = b;
 	}
 	
 }

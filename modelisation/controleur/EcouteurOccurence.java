@@ -5,23 +5,19 @@ import java.awt.event.ActionListener;
 
 import modelisation.modele.Modele;
 
-public class EcouteurDemarrer implements ActionListener {
-
-	/** Attribut m (Modele). */
-	protected Modele m;
+public class EcouteurOccurence implements ActionListener {
 	
-	public EcouteurDemarrer(Modele mod) {
+	protected Modele m;
+
+	public EcouteurOccurence(Modele mod) {
 		// TODO Auto-generated constructor stub
 		this.m=mod;
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		Thread t = new Thread((Runnable)m, "Traitement-image");
-		t.start() ;
-		m.setAvancement(0);
-		m.setRun(true);
-		m.miseAJour();
+
 	}
 
 }

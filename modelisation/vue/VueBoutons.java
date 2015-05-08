@@ -76,7 +76,7 @@ public class VueBoutons extends JPanel implements Observer{
 
 		JPanel p2 = new JPanel();
 		p2.setBackground(Color.LIGHT_GRAY);
-		p2.add(new JLabel("Mode de coupe : "));
+		p2.add(new JLabel("     Mode de selection : "));
 		this.typeSelection = new JLabel();
 		p2.add(typeSelection);
 		typeSelection.setIcon(iconNone);
@@ -106,6 +106,8 @@ public class VueBoutons extends JPanel implements Observer{
 		default:
 			break;
 		}
+		
+		demarrer.setEnabled(!m.IsRun());
 	}
 
 }

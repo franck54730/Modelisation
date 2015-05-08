@@ -25,6 +25,8 @@ class MainClass extends JFrame{
         this.add(vb, BorderLayout.SOUTH);
         this.setJMenuBar(new VueMenu(m));
 	    
+        //
+        
         m.miseAJour();
 	    pack() ;
         setVisible(true);
