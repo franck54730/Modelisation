@@ -10,6 +10,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import modelisation.controleur.EcouteurAnnuler;
+import modelisation.controleur.EcouteurArreter;
 import modelisation.controleur.EcouteurDemarrer;
 import modelisation.controleur.EcouteurParcourir;
 import modelisation.controleur.EcouteurQuitter;
@@ -35,7 +37,10 @@ public class VueBoutons extends JPanel implements Observer{
 	protected JLabel typeSelection;
 	
 	protected JLabel occurence;	
+	
 	protected JLabel nbClick;
+	
+	protected JButton arreter;
 	
 	/** Attribut m (Modele). */
 	protected Modele m;
@@ -65,6 +70,11 @@ public class VueBoutons extends JPanel implements Observer{
 		this.add(demarrer);
 		demarrer.setIcon(new ImageIcon("src/demarrer.png"));
 		demarrer.addActionListener(new EcouteurDemarrer(m));
+		
+		this.arreter = new JButton();
+		this.add(arreter);
+		arreter.setIcon(new ImageIcon("src/annuler-boutton.png"));
+		arreter.addActionListener(new EcouteurArreter(m));
 		
 		this.quitter = new JButton();
 		this.add(quitter);
@@ -114,6 +124,7 @@ public class VueBoutons extends JPanel implements Observer{
 		
 	}
 
+	@SuppressWarnings("deprecation")
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
 		typeCoupe.setIcon(m.getTypeCoupe()==TypeCoupe.COLONNE ? iconColonne : iconLigne);
@@ -136,6 +147,8 @@ public class VueBoutons extends JPanel implements Observer{
 		this.nbClick.setText("Nombre de clic restant : "+(m.getTypeSelection()!=TypeSelection.NONE?(2-m.getNbClic()):"0"));
 		occurence.setText("Nombre d'occurence : "+m.getOccurence());
 		demarrer.setEnabled(!m.IsRun() && m.getFichierSelect() != null);
+		
+		arreter.show(m.IsRun());
 	}
 
 }

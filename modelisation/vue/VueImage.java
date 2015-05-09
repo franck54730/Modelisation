@@ -24,7 +24,7 @@ public class VueImage extends JPanel implements Observer{
         super();
         this.m = mod;
         m.addObserver(this);
-        this.setPreferredSize(new Dimension(500, 500));
+        this.setPreferredSize(new Dimension(600, 500));
         this.addMouseListener(new EcouteurCoupe(mod));
     }
 

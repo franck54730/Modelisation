@@ -62,6 +62,8 @@ public class Modele extends Observable implements Runnable{
 	
 	private boolean run = false;
 	
+	protected boolean arret = false;
+	
 	public TypeCoupe getTypeCoupe(){
 		return typeCoupe;
 	}
@@ -267,14 +269,17 @@ public class Modele extends Observable implements Runnable{
     private void seamCarving() {
     	// TODO Auto-generated method stub
         int boucle = 0;
-        for(int i = 0; i < occurence; i++){
-        	avancement = (boucle*100)/occurence;
-        	if(typeCoupe == TypeCoupe.COLONNE)
-        		seamCarving.supprColonne();
-        	else
-        		seamCarving.supprLigne();
-        	boucle++;
-        	miseAJour();
+        while(!arret){
+        	for(int i = 0; i < occurence; i++){
+            	avancement = (boucle*100)/occurence;
+            	if(typeCoupe == TypeCoupe.COLONNE)
+            		seamCarving.supprColonne();
+            	else
+            		seamCarving.supprLigne();
+            	boucle++;
+            	miseAJour();
+            }
+        	arret = true;
         }
         avancement = 100;
         setRun(false);
@@ -294,14 +299,17 @@ public class Modele extends Observable implements Runnable{
     	//sc.interest4();
     		
     	int boucle = 0;
-    	for(int i = 0; i < occurence; i++){
-    		avancement = (boucle*100)/occurence;
-        	if(typeCoupe == TypeCoupe.COLONNE)
-        		seamCarvingRGB.supprColonne();
-        	else
-        		seamCarvingRGB.supprLigne();
-    		boucle++;
-    		miseAJour();
+    	while(!arret){
+    		for(int i = 0; i < occurence; i++){
+        		avancement = (boucle*100)/occurence;
+            	if(typeCoupe == TypeCoupe.COLONNE)
+            		seamCarvingRGB.supprColonne();
+            	else
+            		seamCarvingRGB.supprLigne();
+        		boucle++;
+        		miseAJour();
+        	}
+    		arret = true;
     	}
     	avancement = 100;
     	setRun(false);
@@ -470,5 +478,13 @@ public class Modele extends Observable implements Runnable{
 	
 	public int getNbClic(){
 		return nbClick;
+	}
+	
+	public void setArret(boolean a){
+		arret = a;
+	}
+	
+	public boolean getArret(){
+		return arret;
 	}
 }
