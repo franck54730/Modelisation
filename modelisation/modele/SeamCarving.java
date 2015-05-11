@@ -726,18 +726,6 @@ public class SeamCarving {
 		supprCoupe(coupe);
 	}
 	
-	public void supprLigne(){
-		rotationTabDroite(image);
-		model.switchImage();
-		toGraph();
-		flowMax();
-        ArrayList<Integer> s = getNoeudAccessibles();
-        int[] coupe = getCoupeFinale(s);
-		supprCoupe(coupe);
-		rotationTabGauche(image);
-		model.switchImage();
-	}
-	
 
 	public String toStringGraph(){
 		StringBuilder sb = new StringBuilder();
@@ -784,7 +772,8 @@ public class SeamCarving {
 		return retour;
 	}
 	
-	public int[][] rotationTabDroite(int[][] tableau) {
+	public void rotationTabDroite() {
+		int[][] tableau = image;
 		int[][]res = new int[tableau[0].length][tableau.length];
         int[][]interetModif = new int[tableau[0].length][tableau.length];
         for (int i = 0; i < tableau[0].length; i++) {
@@ -794,10 +783,11 @@ public class SeamCarving {
                 }
         }
         model.setInterestModif(interetModif);
-        return res;
+        image = res;
 	}
 
-	public int[][] rotationTabGauche(int[][] tableau) {
+	public void rotationTabGauche() {
+		int[][] tableau = image;
 		int[][]res = new int[tableau[0].length][tableau.length];
         int[][]interetModif = new int[tableau[0].length][tableau.length];
         for (int i = 0; i < tableau[0].length; i++) {
@@ -807,6 +797,6 @@ public class SeamCarving {
                 }
         }
         model.setInterestModif(interetModif);
-        return res;
+        image = res;
 	}
 }

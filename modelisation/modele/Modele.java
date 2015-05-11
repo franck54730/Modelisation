@@ -269,18 +269,20 @@ public class Modele extends Observable implements Runnable{
     private void seamCarving() {
     	// TODO Auto-generated method stub
         int boucle = 0;
+
+    	if(typeCoupe == TypeCoupe.LIGNE)
+    		seamCarving.rotationTabDroite();
         while(!arret){
         	for(int i = 0; i < occurence; i++){
             	avancement = (boucle*100)/occurence;
-            	if(typeCoupe == TypeCoupe.COLONNE)
-            		seamCarving.supprColonne();
-            	else
-            		seamCarving.supprLigne();
+            	seamCarving.supprColonne();
             	boucle++;
             	miseAJour();
             }
         	arret = true;
         }
+    	if(typeCoupe == TypeCoupe.LIGNE)
+    		seamCarving.rotationTabGauche();
         avancement = 100;
         setRun(false);
         resetInterestModif();

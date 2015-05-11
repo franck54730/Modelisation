@@ -15,7 +15,6 @@ public class EcouteurArreter implements ActionListener {
 		this.m=mod;
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		m.setOccurence(1);
