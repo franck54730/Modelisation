@@ -15,7 +15,7 @@ import modelisation.controleur.EcouteurColonne;
 import modelisation.controleur.EcouteurDontCoupe;
 import modelisation.controleur.EcouteurFirstCoupe;
 import modelisation.controleur.EcouteurLigne;
-import modelisation.controleur.EcouteurOccurence;
+import modelisation.controleur.EcouteurOccurrence;
 import modelisation.controleur.EcouteurParcourir;
 import modelisation.controleur.EcouteurQuitter;
 import modelisation.controleur.EcouteurSauvegarder;
@@ -92,9 +92,9 @@ public class VueMenu extends JMenuBar implements Observer {
 		jMenuItemFirstCoupe.setIcon(iconFirstCoupe);
 		jMenuItemFirstCoupe.addActionListener(new EcouteurFirstCoupe(m));
 		
-		jMenuItemOccurence = new JMenuItem("Occurence");
+		jMenuItemOccurence = new JMenuItem("Occurrence");
 		jMenuItemOccurence.setIcon(iconOccurence);
-		jMenuItemOccurence.addActionListener(new EcouteurOccurence(m));
+		jMenuItemOccurence.addActionListener(new EcouteurOccurrence(m));
 		
 		jMenuItemAucun = new JMenuItem("Aucun");
 		jMenuItemAucun.setIcon(iconNoneCoupe);
