@@ -40,6 +40,17 @@ public class VueMenu extends JMenuBar implements Observer {
 	protected JMenuItem jMenuItemAnnuler;
 	protected JMenu jMenuArreter;
 	
+	protected ImageIcon iconParcourirMenu = new ImageIcon(VueMenu.class.getResource("/modelisation/folder/parcourir-menu.png"));
+	protected ImageIcon iconEnregistrer = new ImageIcon(VueMenu.class.getResource("/modelisation/folder/enregistrer.png"));
+	protected ImageIcon iconQuitterMenu = new ImageIcon(VueMenu.class.getResource("/modelisation/folder/quitter-menu.png"));
+	protected ImageIcon iconSupprColonne = new ImageIcon(VueMenu.class.getResource("/modelisation/folder/supprColonne.png"));
+	protected ImageIcon iconSupprLigne = new ImageIcon(VueMenu.class.getResource("/modelisation/folder/supprLigne.png"));
+	protected ImageIcon iconDontCoupe = new ImageIcon(VueMenu.class.getResource("/modelisation/folder/dontCoupe.png"));
+	protected ImageIcon iconFirstCoupe = new ImageIcon(VueMenu.class.getResource("/modelisation/folder/firstCoupe.png"));
+	protected ImageIcon iconOccurence = new ImageIcon(VueMenu.class.getResource("/modelisation/folder/occurence.png"));
+	protected ImageIcon iconNoneCoupe = new ImageIcon(VueMenu.class.getResource("/modelisation/folder/noneCoupe.png"));
+	protected ImageIcon iconAnnulerCoupe = new ImageIcon(VueMenu.class.getResource("/modelisation/folder/annulerCoupe.png"));
+	
 	
 	public VueMenu(Modele mod) {
 		this.m=mod;
@@ -50,47 +61,47 @@ public class VueMenu extends JMenuBar implements Observer {
 		JMenu jMenu21 = new JMenu("Coupe");
 		jMenu2.add(jMenu21);
 		
-		JMenu jMenu22 = new JMenu("Selection");
+		JMenu jMenu22 = new JMenu("Sélection");
 		jMenu2.add(jMenu22);
 		
 		jMenuItemOuvrir = new JMenuItem("Ouvrir");
-		jMenuItemOuvrir.setIcon(new ImageIcon("src/parcourir-menu.png"));
+		jMenuItemOuvrir.setIcon(iconParcourirMenu);
 		jMenuItemOuvrir.addActionListener(new EcouteurParcourir(m));
 		
 		jMenuItemEnregistrer = new JMenuItem("Enregistrer-sous");
-		jMenuItemEnregistrer.setIcon(new ImageIcon("src/enregistrer.png"));
+		jMenuItemEnregistrer.setIcon(iconEnregistrer);
 		jMenuItemEnregistrer.addActionListener(new EcouteurSauvegarder(m));
 		
 		jMenuItemQuitter = new JMenuItem("Quitter");
-		jMenuItemQuitter.setIcon(new ImageIcon("src/quitter-menu.png"));
+		jMenuItemQuitter.setIcon(iconQuitterMenu);
 		jMenuItemQuitter.addActionListener(new EcouteurQuitter(m));
 		
 		jMenuIemColonne = new JMenuItem("Sup-colonne");
-		jMenuIemColonne.setIcon(new ImageIcon("src/supprColonne.png"));
+		jMenuIemColonne.setIcon(iconSupprColonne);
 		jMenuIemColonne.addActionListener(new EcouteurColonne(m));
 		
 		jMenuItemLigne = new JMenuItem("Sup-ligne");
-		jMenuItemLigne.setIcon(new ImageIcon("src/supprLigne.png"));
+		jMenuItemLigne.setIcon(iconSupprLigne);
 		jMenuItemLigne.addActionListener(new EcouteurLigne(m));
 		
 		jMenuItemDontCoupe = new JMenuItem("Garder");
-		jMenuItemDontCoupe.setIcon(new ImageIcon("src/dontCoupe.png"));
+		jMenuItemDontCoupe.setIcon(iconDontCoupe);
 		jMenuItemDontCoupe.addActionListener(new EcouteurDontCoupe(m));
 		
 		jMenuItemFirstCoupe = new JMenuItem("Supprimer");
-		jMenuItemFirstCoupe.setIcon(new ImageIcon("src/firstCoupe.png"));
+		jMenuItemFirstCoupe.setIcon(iconFirstCoupe);
 		jMenuItemFirstCoupe.addActionListener(new EcouteurFirstCoupe(m));
 		
 		jMenuItemOccurence = new JMenuItem("Occurence");
-		jMenuItemOccurence.setIcon(new ImageIcon("src/occurence.png"));
+		jMenuItemOccurence.setIcon(iconOccurence);
 		jMenuItemOccurence.addActionListener(new EcouteurOccurence(m));
 		
 		jMenuItemAucun = new JMenuItem("Aucun");
-		jMenuItemAucun.setIcon(new ImageIcon("src/noneCoupe.png"));
+		jMenuItemAucun.setIcon(iconNoneCoupe);
 		jMenuItemAucun.addActionListener(new EcouteurAucun(m));
 		
 		jMenuItemAnnuler = new JMenuItem("Annuler");
-		jMenuItemAnnuler.setIcon(new ImageIcon("src/annulerCoupe.png"));
+		jMenuItemAnnuler.setIcon(iconAnnulerCoupe);
 		jMenuItemAnnuler.addActionListener(new EcouteurAnnuler(m));
 		
 		jMenu1.add(jMenuItemOuvrir);

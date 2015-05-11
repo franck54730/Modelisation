@@ -45,12 +45,15 @@ public class VueBoutons extends JPanel implements Observer{
 	/** Attribut m (Modele). */
 	protected Modele m;
 	
-	protected ImageIcon iconLigne = new ImageIcon("src/supprLigne.png");
-	protected ImageIcon iconColonne = new ImageIcon("src/supprColonne.png");
-
-	protected ImageIcon iconNone = new ImageIcon("src/noneCoupe.png");
-	protected ImageIcon iconFirst = new ImageIcon("src/firstCoupe.png");
-	protected ImageIcon iconDont = new ImageIcon("src/dontCoupe.png");
+	protected ImageIcon iconLigne = new ImageIcon(VueBoutons.class.getResource("/modelisation/folder/supprLigne.png"));
+	protected ImageIcon iconColonne = new ImageIcon(VueBoutons.class.getResource("/modelisation/folder/supprColonne.png"));
+	protected ImageIcon iconNoneCoupe = new ImageIcon(VueBoutons.class.getResource("/modelisation/folder/noneCoupe.png"));
+	protected ImageIcon iconFirstCoupe = new ImageIcon(VueBoutons.class.getResource("/modelisation/folder/firstCoupe.png"));
+	protected ImageIcon iconDontCoupe = new ImageIcon(VueBoutons.class.getResource("/modelisation/folder/dontCoupe.png"));
+	protected ImageIcon iconQuitter = new ImageIcon(VueBoutons.class.getResource("/modelisation/folder/quitter.png"));
+	protected ImageIcon iconParcourir = new ImageIcon(VueBoutons.class.getResource("/modelisation/folder/parcourir.png"));
+	protected ImageIcon iconDemarrer = new ImageIcon(VueBoutons.class.getResource("/modelisation/folder/demarrer.png"));
+	protected ImageIcon iconAnnulerBoutton = new ImageIcon(VueBoutons.class.getResource("/modelisation/folder/annuler-boutton.png"));
 
 	public VueBoutons(Modele mod) {
 		// TODO Auto-generated constructor stub
@@ -62,23 +65,23 @@ public class VueBoutons extends JPanel implements Observer{
 		
 		this.parcourir = new JButton();
 		this.add(parcourir);
-		parcourir.setIcon(new ImageIcon("src/parcourir.png"));
+		parcourir.setIcon(iconParcourir);
 		parcourir.addActionListener(new EcouteurParcourir(m));
 
 		
 		this.demarrer = new JButton();
 		this.add(demarrer);
-		demarrer.setIcon(new ImageIcon("src/demarrer.png"));
+		demarrer.setIcon(iconDemarrer);
 		demarrer.addActionListener(new EcouteurDemarrer(m));
 		
 		this.arreter = new JButton();
 		this.add(arreter);
-		arreter.setIcon(new ImageIcon("src/annuler-boutton.png"));
+		arreter.setIcon(iconAnnulerBoutton);
 		arreter.addActionListener(new EcouteurArreter(m));
 		
 		this.quitter = new JButton();
 		this.add(quitter);
-		quitter.setIcon(new ImageIcon("src/quitter.png"));
+		quitter.setIcon(iconQuitter);
 		quitter.addActionListener(new EcouteurQuitter(m));
 		
 		JPanel p1 = new JPanel();
@@ -93,7 +96,7 @@ public class VueBoutons extends JPanel implements Observer{
 		p2.add(new JLabel("     Mode de selection : "));
 		this.typeSelection = new JLabel();
 		p2.add(typeSelection);
-		typeSelection.setIcon(iconNone);
+		typeSelection.setIcon(iconNoneCoupe);
 		
 		JPanel p3 = new JPanel();
 		p3.setLayout(new BoxLayout(p3, BoxLayout.PAGE_AXIS));
@@ -130,13 +133,13 @@ public class VueBoutons extends JPanel implements Observer{
 		typeCoupe.setIcon(m.getTypeCoupe()==TypeCoupe.COLONNE ? iconColonne : iconLigne);
 		switch (m.getTypeSelection()) {
 		case DONT:
-			typeSelection.setIcon(iconDont);
+			typeSelection.setIcon(iconDontCoupe);
 			break;
 		case FIRST:
-			typeSelection.setIcon(iconFirst);
+			typeSelection.setIcon(iconFirstCoupe);
 			break;
 		case NONE:
-			typeSelection.setIcon(iconNone);
+			typeSelection.setIcon(iconNoneCoupe);
 			break;
 		default:
 			break;
