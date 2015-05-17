@@ -13,6 +13,7 @@ import modelisation.controleur.EcouteurCoupe;
 import modelisation.modele.Modele;
 import modelisation.modele.Pixel;
 
+@SuppressWarnings("serial")
 public class VueImage extends JPanel implements Observer{
 	
 	protected Modele m;

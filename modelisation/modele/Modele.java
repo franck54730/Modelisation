@@ -196,7 +196,8 @@ public class Modele extends Observable implements Runnable{
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("PGM & PPM Images", "ppm", "pgm");
 		dialogue.setFileFilter(filter); 
 		dialogue.setSelectedFile(fichierSelect);
-        File fichier = null;
+        @SuppressWarnings("unused")
+		File fichier = null;
 		if (dialogue.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
 		    fichier = dialogue.getSelectedFile();
 		    

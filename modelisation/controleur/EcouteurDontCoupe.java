@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import modelisation.modele.Modele;
-import modelisation.modele.Modele.TypeCoupe;
 import modelisation.modele.Modele.TypeSelection;
 
 public class EcouteurDontCoupe implements ActionListener {

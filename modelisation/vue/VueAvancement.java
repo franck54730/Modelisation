@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import modelisation.modele.Modele;
 
+@SuppressWarnings("serial")
 public class VueAvancement extends JPanel implements Observer{
 	
 	protected Modele m;

@@ -10,7 +10,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import modelisation.controleur.EcouteurAnnuler;
 import modelisation.controleur.EcouteurArreter;
 import modelisation.controleur.EcouteurDemarrer;
 import modelisation.controleur.EcouteurParcourir;
@@ -19,6 +18,7 @@ import modelisation.modele.Modele;
 import modelisation.modele.Modele.TypeCoupe;
 import modelisation.modele.Modele.TypeSelection;
 
+@SuppressWarnings("serial")
 public class VueBoutons extends JPanel implements Observer{
 	
 	/** Attribut demarrer (JButton). */

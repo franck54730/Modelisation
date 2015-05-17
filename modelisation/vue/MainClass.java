@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 
 import modelisation.modele.*;
  
+@SuppressWarnings("serial")
 class MainClass extends JFrame{
 	
 	public MainClass(){

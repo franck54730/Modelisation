@@ -40,11 +40,13 @@ public class SeamCarving {
 		try {
 			InputStream f = new FileInputStream(model.getFichierSelect());
 			BufferedReader d = new BufferedReader(new InputStreamReader(f));
+			@SuppressWarnings("unused")
 			String magic = d.readLine();
 			String line = d.readLine();
 			while (line.startsWith("#")) {
 				line = d.readLine();
 			}
+			@SuppressWarnings("resource")
 			Scanner s = new Scanner(line);
 			int width = s.nextInt();
 			int height = s.nextInt();
@@ -53,6 +55,7 @@ public class SeamCarving {
 			model.resetInterestModif();
 			line = d.readLine();
 			s = new Scanner(line);
+			@SuppressWarnings("unused")
 			int maxVal = s.nextInt();
 			int[][] im = new int[height][width];
 			s = new Scanner(d);
@@ -664,6 +667,7 @@ public class SeamCarving {
 			arretesDernierNoeud.get(i).used=minFlow[i];
 		}
 		
+		@SuppressWarnings("unused")
 		int compteur = 0;
 		
 		for(int i=1; i<=model.getN()-2-minFlow.length; i++){
@@ -729,6 +733,7 @@ public class SeamCarving {
 
 	public String toStringGraph(){
 		StringBuilder sb = new StringBuilder();
+			@SuppressWarnings("unused")
 			int ligne = 0;
 			for(int i = 0; i < image.length; i++){
 				Edge e = getArrete(0, i+1);
@@ -748,6 +753,7 @@ public class SeamCarving {
 	public int[] getCoupeFinale(ArrayList<Integer> tab){
 		//Ici aux est de la forme largeur / hauteur
 
+		@SuppressWarnings("unchecked")
 		ArrayList<Integer>[] aux = new ArrayList[image.length];
 		for(int i=0; i<aux.length; i++){
 			aux[i] = new ArrayList<Integer>();

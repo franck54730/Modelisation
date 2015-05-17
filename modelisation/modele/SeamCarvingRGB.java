@@ -30,11 +30,13 @@ public class SeamCarvingRGB {
 			File test = model.getFichierSelect();
 			InputStream f = new FileInputStream(test);
 			BufferedReader d = new BufferedReader(new InputStreamReader(f));
+			@SuppressWarnings("unused")
 			String magic = d.readLine();
 			String line = d.readLine();
 			while (line.startsWith("#")) {
 				line = d.readLine();
 			}
+			@SuppressWarnings("resource")
 			Scanner s = new Scanner(line);
 			int width = s.nextInt();
 			int height = s.nextInt();
@@ -43,6 +45,7 @@ public class SeamCarvingRGB {
 			model.resetInterestModif();
 			line = d.readLine();
 			s = new Scanner(line);
+			@SuppressWarnings("unused")
 			int maxVal = s.nextInt();
 			Pixel[][] im = new Pixel[height][width];
 			s = new Scanner(d);
@@ -295,6 +298,7 @@ public class SeamCarvingRGB {
 	public int[] getCoupeFinale(ArrayList<Integer> tab){
 		//Ici aux est de la forme largeur / hauteur
 
+		@SuppressWarnings("unchecked")
 		ArrayList<Integer>[] aux = new ArrayList[image.length];
 		for(int i=0; i<aux.length; i++){
 			aux[i] = new ArrayList<Integer>();
@@ -525,6 +529,7 @@ public class SeamCarvingRGB {
 				arretesDernierNoeud.get(i).used=minFlow[i];
 			}
 			
+			@SuppressWarnings("unused")
 			int compteur = 0;
 			
 			for(int i=1; i<=model.getN()-2-minFlow.length; i++){

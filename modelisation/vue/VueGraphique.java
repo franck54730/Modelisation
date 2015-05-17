@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 
 import modelisation.modele.Modele;
 
+@SuppressWarnings("serial")
 public class VueGraphique extends JPanel{
 
 	protected Modele m;

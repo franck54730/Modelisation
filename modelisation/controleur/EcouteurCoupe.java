@@ -4,8 +4,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import modelisation.modele.Modele;
-import modelisation.modele.Modele.TypeCoupe;
-import modelisation.modele.Modele.TypeSelection;
 
 public class EcouteurCoupe implements MouseListener {
 

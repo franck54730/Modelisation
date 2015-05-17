@@ -9,7 +9,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import modelisation.controleur.EcouteurAnnuler;
-import modelisation.controleur.EcouteurArreter;
 import modelisation.controleur.EcouteurAucun;
 import modelisation.controleur.EcouteurColonne;
 import modelisation.controleur.EcouteurDontCoupe;
@@ -24,6 +23,7 @@ import modelisation.modele.Modele.TypeCoupe;
 import modelisation.modele.Modele.TypeSelection;
 
 
+@SuppressWarnings("serial")
 public class VueMenu extends JMenuBar implements Observer {
 	
 	/** Attribut m (Modele). */
@@ -126,7 +126,6 @@ public class VueMenu extends JMenuBar implements Observer {
 		
 	}
 
-	@SuppressWarnings("deprecation")
 	public void update(Observable arg0, Object arg1) {
 		// TODO Stub de la méthode généré automatiquement
 
